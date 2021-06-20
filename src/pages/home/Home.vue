@@ -30,6 +30,7 @@
                     <div class="dropdown-content">
                         <p @click="openForm()">Editar Perfil</p>
                         <p @click="openOverlay()">Excluir Perfil</p>
+                        <p @click="logOut()">Sair</p>
                     </div>
                 </div>
                 <div 
@@ -64,6 +65,7 @@
                             type="password"
                             name="password"
                             id="password"
+                            autocomplete="on"
                             required
                             v-model="dataUser.password"
                         />
@@ -131,12 +133,18 @@ export default {
     },
     methods: {
         ...mapActions('auth', [
-            'ActionSetUser',
-            'ActionUpdateUser'
+            'ActionUpdateUser',
+            'ActionSignOut'
         ]),
 
+        logOut() {
+            this.ActionSignOut()
+            this.$router.push({ name: 'login' })
+        },
+
+
         submitChanges() {
-            this.ActionSetUser(this.dataUser)
+            this.ActionUpdateUser({ user: this.dataUser })
         },
 
         openDropdown() {
@@ -259,7 +267,7 @@ form {
 form input {
     outline: none;
     font-size: 1rem;
-    background-color: rgb(99, 99, 212);
+    background-color:  rgb(99, 99, 212);
     width: 100%;
     border: none;
     padding: 0 20px;

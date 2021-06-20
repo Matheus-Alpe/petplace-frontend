@@ -43,13 +43,25 @@ export const ActionSetUser = ({ commit }, payload) => {
     commit(types.SET_USER, payload)
 }
 
-export const ActionUpdateUser = async ({ dispatch }, payload) => {
-    console.log('>>', payload)
-    await services.auth.updateUser(payload)
-    dispatch('ActionSetUser', payload)
+export const ActionRegisterUser = async ({ dispatch }, payload) => {
+    try {
+        await services.auth.registerUser(payload)
+        dispatch('ActionDoLogin', { ...payload.user })
+    } catch (error) {
+        return error && error.body && error.body.erros
+    }
     
 }
-  
+
+export const ActionUpdateUser = async ({ dispatch }, payload) => {
+    try {
+        const { data: { user } } = await services.auth.updateUser(payload)
+        dispatch('ActionSetUser', user)
+    } catch (error) {
+        console.log(error)
+    }
+    
+}
 
 export const ActionSetToken = ({ commit }, payload) => {
     storage.setLocalToken(payload)
