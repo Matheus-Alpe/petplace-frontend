@@ -49,7 +49,7 @@
                 </sub>
                 <div class="button-container">
                     <button type="submit" class="button-main">Login</button>
-                    <a href="#cadastro" class="button-secondary">
+                    <a href="#cadastrar" class="button-secondary">
                         Cadastrar-se
                     </a>
                 </div>
@@ -140,7 +140,7 @@
                         required
                     />
                 </label>
-                <div class="button-container" id="cadastro">
+                <div class="button-container" id="cadastrar">
                     <button 
                         type="submit" 
                         class="button-main"
@@ -189,7 +189,6 @@ export default {
         async logIn() {
             try {
                 await this.ActionDoLogin(this.form)
-                this.$router.push({ name: 'home' })
             } catch (err) {
                 this.erros.login = err.data.message
             }
@@ -203,7 +202,6 @@ export default {
                         this.erros = response
                         return
                     }
-                    this.$router.push({ name: 'home' })
                 } catch (error) {
                     console.log(error)
                 }

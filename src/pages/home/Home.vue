@@ -112,7 +112,7 @@
         </div>
 
         <!-- The overlay -->
-        <overlay></overlay>
+        <overlay :user="dataUser"></overlay>
     </div>
 </template>
 

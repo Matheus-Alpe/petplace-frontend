@@ -14,13 +14,13 @@ import { mapActions } from 'vuex'
 
 export default {
     name: "Overlay",
+    props: ['user'],
     methods: {
 
-        ...mapActions('auth', ['ActionSignOut']),
+        ...mapActions('auth', ['ActionDeleteUser']),
 
         remove() {
-            this.ActionSignOut()
-            this.$router.push({ name: 'login' })
+            this.ActionDeleteUser(this.user)
         },
 
         closeOverlay() {

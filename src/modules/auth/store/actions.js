@@ -2,10 +2,15 @@ import services from '@/http'
 import * as storage from '../storage'
 import * as types from './mutation-types'
 
+function goTo(path) {
+    window.location.href = path
+}
+
 export const ActionDoLogin = ({ dispatch }, payload) => {
     return services.auth.login(payload).then((res) => {
         dispatch('ActionSetUser', res.data.user)
         dispatch('ActionSetToken', res.data.token)
+        goTo('/')
     })
 }
 
@@ -45,8 +50,10 @@ export const ActionSetUser = ({ commit }, payload) => {
 
 export const ActionRegisterUser = async ({ dispatch }, payload) => {
     try {
-        await services.auth.registerUser(payload)
-        dispatch('ActionDoLogin', { ...payload.user })
+        const response = await services.auth.registerUser(payload)
+        if(response.status === 200) {
+            dispatch('ActionDoLogin', { ...payload.user })
+        }
     } catch (error) {
         return error && error.body && error.body.erros
     }
@@ -60,7 +67,16 @@ export const ActionUpdateUser = async ({ dispatch }, payload) => {
     } catch (error) {
         console.log(error)
     }
-    
+}
+
+export const ActionDeleteUser = ({ dispatch }, payload) => {
+    try {
+        services.auth.deleteUser({ user: payload })
+        dispatch('ActionSignOut')
+        goTo('/login')
+    } catch (error) {
+        console.log(error)
+    }
 }
 
 export const ActionSetToken = ({ commit }, payload) => {
