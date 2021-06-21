@@ -28,17 +28,29 @@
                     </svg>
 
                     <div class="dropdown-content">
-                        <p @click="openForm()">Editar Perfil</p>
+                        <p @click="showForm">Editar Perfil</p>
                         <p @click="openOverlay()">Excluir Perfil</p>
                         <p @click="logOut()">Sair</p>
                     </div>
                 </div>
                 <div 
                     class="owner-avatar" 
-                    :style="{ backgroundImage: 'url(' + user.image + ')' }"></div>
-                <h2 class="main-owner-name">{{ user.name }}</h2>
+                    :style="{ backgroundImage: 'url(' + (imageUrl ? imageUrl : user.image) + ')' }">
+                    <div class="img-selector" v-if="displayForm">
+                        <label for="image">
+                            <i class="material-icons md-24">add_a_photo</i>
+                        </label>
+                        <input @change="previewFiles" type="file" name="image" id="image" accept="image/*">
+                    </div>
+                </div>
+                
+                <h2 class="main-owner-name" v-if="!displayForm">{{ user.name }}</h2>
 
-                <form id="owner-form" @submit.prevent="submitChanges" v-if="dataUser">
+                <form id="owner-form" 
+                    @submit.prevent="submitChanges" 
+                    v-if="dataUser"
+                    :class="{ active: displayForm }"
+                >
                     <label for="name" class="custom-input"
                         ><span class="placeholder">Nome</span>
                         <input
@@ -72,11 +84,11 @@
                     </label>
                    
                     <div class="button-container">
-                        <button class="button-main" @click="closeForm()">
+                        <button class="button-main" @click="showForm">
                             Salvar
                         </button>
 
-                        <a class="closebtn" @click="closeForm()">
+                        <a class="closebtn" @click="showForm('close')">
                             <i class="material-icons md-48">close</i>
                         </a>
                         
@@ -126,24 +138,45 @@ export default {
         Overlay
     },
     data: () => ({
-        dataUser: null
+        dataUser: null,
+        displayForm: false,
+        inputFile: null
     }),
     computed: {
-        ...mapState('auth', ['user'])
+        ...mapState('auth', ['user']),
+
+        imageUrl() {
+            return this.inputFile && URL.createObjectURL(this.inputFile)
+        }
     },
     methods: {
         ...mapActions('auth', [
             'ActionUpdateUser',
-            'ActionSignOut'
+            'ActionSignOut',
+            'ActionUploadImagem'
         ]),
+
+        previewFiles(event) {
+            const file = event.target.files[0]
+            const providerImaeg = 'http://localhost:5000/static/users/'
+            Object.defineProperty(file, 'name', {
+                writable: true,
+                value: `${providerImaeg}${this.dataUser.id}${new Date().toISOString().replace(/[^\w\s]/gi, '')}.${file.type.split('/')[1]}`
+            });
+            this.inputFile = file
+        },
 
         logOut() {
             this.ActionSignOut()
             this.$router.push({ name: 'login' })
         },
 
-
-        submitChanges() {
+        async submitChanges() {
+            if (this.inputFile) {
+                console.log(this.inputFile)
+                await this.ActionUploadImagem(this.inputFile)
+                this.dataUser.image = this.inputFile.name
+            }
             this.ActionUpdateUser({ user: this.dataUser })
         },
 
@@ -160,16 +193,14 @@ export default {
             document.getElementById("excludeOverlay").style.display = "block";
         },
 
-        openForm() {
-            this.closeDropdown();
-            document.getElementById("owner-form").style.height = "100%";
-            document.querySelector(".main-owner-name").style.display = "none";
-        },
+        showForm(type) {
+            this.displayForm = !this.displayForm
+            this.closeDropdown()
+            if(type === 'close') {
+                this.inputFile = null
+            }
+        }
 
-        closeForm() {
-            document.getElementById("owner-form").style.height = "0";
-            document.querySelector(".main-owner-name").style.display = "block";
-        },
     },
     mounted() {
         this.dataUser = {
@@ -209,6 +240,13 @@ export default {
     width: 125px;
     height: 125px;
     border-radius: 50%;
+}
+
+.img-selector {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    color: white;
 }
 
 .owner__pets-container {
@@ -264,10 +302,18 @@ form {
     height: 0;
 }
 
+.active {
+    height: 100%;
+}
+
+input[type="file"] {
+    display: none;
+}
+
 form input {
     outline: none;
     font-size: 1rem;
-    background-color:  rgb(99, 99, 212);
+    background-color:  transparent;
     width: 100%;
     border: none;
     padding: 0 20px;
@@ -317,7 +363,7 @@ form input:focus,
 }
 
 .button-main {
-    background-color: rgb(99, 99, 212);
+    background-color: transparent;
     color: white;
 }
 

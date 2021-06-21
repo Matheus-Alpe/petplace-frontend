@@ -52,12 +52,25 @@ export const ActionRegisterUser = async ({ dispatch }, payload) => {
     try {
         const response = await services.auth.registerUser(payload)
         if(response.status === 200) {
+            await dispatch('ActionUploadImagem', payload.saveImage)
             dispatch('ActionDoLogin', { ...payload.user })
         }
     } catch (error) {
         return error && error.body && error.body.erros
     }
     
+}
+
+export const ActionUploadImagem = async ({ dispatch }, payload) => {
+    try {
+        // const { data: { user } } = await services.auth.uploadImage(payload)
+        const formData = new FormData();
+        formData.append('pic', payload, payload.name)
+        await services.auth.uploadImage(formData);
+        // dispatch('ActionSetUser', user)
+    } catch (error) {
+        console.log(dispatch);
+    }
 }
 
 export const ActionUpdateUser = async ({ dispatch }, payload) => {
