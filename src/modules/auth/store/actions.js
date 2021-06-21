@@ -52,7 +52,9 @@ export const ActionRegisterUser = async ({ dispatch }, payload) => {
     try {
         const response = await services.auth.registerUser(payload)
         if(response.status === 200) {
-            await dispatch('ActionUploadImagem', payload.saveImage)
+            if (payload.saveImage) {
+                await dispatch('ActionUploadImagem', payload.saveImage)
+            }
             dispatch('ActionDoLogin', { ...payload.user })
         }
     } catch (error) {
