@@ -173,7 +173,6 @@ export default {
 
         async submitChanges() {
             if (this.inputFile) {
-                console.log(this.inputFile)
                 await this.ActionUploadImagem(this.inputFile)
                 this.dataUser.image = this.inputFile.name
             }

@@ -157,7 +157,7 @@ export default {
             name: '',
             cpf: '',
             email: '',
-            image: '',
+            image: 'http://localhost:5000/static/users/default.png',
             password: '',
             confirmation: ''
         },
@@ -208,7 +208,7 @@ export default {
         async registerIn() {
             if (this.isValid) {
                 try {
-                     if (this.inputFile) {
+                    if (this.inputFile) {
                         this.register.image = this.inputFile.name
                     }
                     const response = await this.ActionRegisterUser({ 
