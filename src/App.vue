@@ -5,6 +5,9 @@
   </div>
 </template>
 
-<style lang="scss">
-
+<style lang="scss" scoped>
+#app {
+  max-width: 400px;
+  margin: 0 auto;
+}
 </style>

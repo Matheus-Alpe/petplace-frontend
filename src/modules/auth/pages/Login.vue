@@ -59,7 +59,8 @@
         <div class="register">
             <div 
                     class="owner-avatar logo logo-secondary" 
-                    :style="{ backgroundImage: 'url(' + (imageUrl ? imageUrl : 'http://localhost:5000/static/users/default.png') + ')' }">
+                    :style="imageUrl">
+
                     <div class="img-selector">
                         <label for="image">
                             <i class="material-icons md-24">add_a_photo</i>
@@ -157,7 +158,7 @@ export default {
             name: '',
             cpf: '',
             email: '',
-            image: 'http://localhost:5000/static/users/default.png',
+            image: 'http://localhost:5000/static/users/default-profile.svg',
             password: '',
             confirmation: ''
         },
@@ -171,13 +172,17 @@ export default {
 
     computed: {
         isValid() {
-            return (this.register.password && 
-                this.register.password === this.register.confirmation) 
+            return (this.register.password 
+                && this.register.password === this.register.confirmation) 
                 || this.register.confirmation === '' 
                 && this.register.password === ''
         },
         imageUrl() {
-            return this.inputFile && URL.createObjectURL(this.inputFile)
+            const image = this.inputFile && URL.createObjectURL(this.inputFile) 
+                ||  require('@/assets/icons/default-profile.svg')
+            return { 
+                backgroundImage: `url(${image})` 
+            }
         }
     },
 
