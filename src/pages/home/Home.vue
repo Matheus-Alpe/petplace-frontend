@@ -152,7 +152,7 @@ export default {
     methods: {
         ...mapActions('auth', [
             'ActionUpdateUser',
-            'ActionSignOut',
+            'logOut',
             'ActionUploadImagem'
         ]),
 
@@ -167,7 +167,7 @@ export default {
         },
 
         logOut() {
-            this.ActionSignOut()
+            this.logOut()
             this.$router.push({ name: 'login' })
         },
 

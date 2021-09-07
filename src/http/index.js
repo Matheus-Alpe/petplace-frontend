@@ -1,23 +1,18 @@
-import Vue from 'vue'
-import VueResource from 'vue-resource'
-import services from './services'
-import interceptors from './interceptors'
+import axios from 'axios'
+import { responseInterceptor } from './interceptors'
 
-Vue.use(VueResource)
-
-const http = Vue.http
-
-http.options.root = 'http://localhost:5000/'
-
-http.interceptors.push(interceptors)
-
-Object.keys(services).map(service => {
-    services[service] = Vue.resource('', {}, services[service])
-})
-
-const setBearerToken = token => {
-    http.headers.common['Authorization'] = `Bearer ${token}`
+let config = {
+    baseURL: 'http://localhost:5000',
+    timeout: 60 * 1000, // Timeout
+    // withCredentials: true, // Check cross-site Access-Control
 }
 
-export default services
-export { http, setBearerToken }
+const api = axios.create(config)
+
+api.interceptors.response.use(responseInterceptor)
+
+const setBearerToken = token => {
+    api.defaults.headers.common['Authorization'] = `Bearer ${token}`
+}
+
+export { api, setBearerToken }

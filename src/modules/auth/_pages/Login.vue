@@ -21,7 +21,7 @@
             </defs>
             </svg>
 
-            <form @submit.prevent="logIn">
+            <form @submit.prevent="userLogin">
                 <label for="email" class="custom-input">
                     <span class="placeholder">Email</span>
                     <input 
@@ -188,7 +188,9 @@ export default {
 
     methods: {
         ...mapActions('auth', [
-            'ActionDoLogin', 
+            'logIn',
+            'setUser',
+            'setToken',
             'ActionRegisterUser'
         ]),
 
@@ -202,31 +204,33 @@ export default {
             this.inputFile = file
         },
 
-        async logIn() {
-            try {
-                await this.ActionDoLogin(this.form)
-            } catch (err) {
-                this.erros.login = err.data.message
+        async userLogin() {
+             try {
+                const { data: { token, user } } = await this.logIn(this.form)
+                this.setToken(token)
+                this.setUser(user)
+                this.$router.push('/')
+            } catch ({ response }) {
+                this.erros.login = response.data.message || 'Erro no servidor. ):'
             }
         },
 
         async registerIn() {
-            if (this.isValid) {
-                try {
-                    if (this.inputFile) {
-                        this.register.image = this.inputFile.name
-                    }
-                    const response = await this.ActionRegisterUser({ 
-                        user: this.register,
-                        saveImage: this.inputFile
-                    })
-                    if (response) {
-                        this.erros = response
-                        return
-                    }
-                } catch (error) {
-                    console.log(error)
+            if (!this.isValid) return
+            try {
+                if (this.inputFile) {
+                    this.register.image = this.inputFile.name
                 }
+                const response = await this.ActionRegisterUser({ 
+                    user: this.register,
+                    saveImage: this.inputFile
+                })
+                if (response) {
+                    this.erros = response
+                    return
+                }
+            } catch (error) {
+                console.log(error)
             }
         },
 
