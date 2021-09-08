@@ -3,16 +3,16 @@ import store from '../store'
 export default async (to, from, next) => {
     document.title = `${to.name} - PetPlace`
 
-    if (to.name !== 'login' && !store.getters['auth/hasToken']) {
+    if (to.name !== 'Login' && !store.getters['auth/hasToken']) {
         try {
-            await store.dispatch('auth/ActionCheckToken')
+            await store.dispatch('auth/checkToken')
             next({ name: to.name })
         } catch (error) {
-            next({ name: 'login' })
+            store.dispatch('auth/logOut')
         }
     } else {
-        if (to.name === 'login' && store.getters['auth/hasToken']) {
-            next({ name: 'home' })
+        if (to.name === 'Login' && store.getters['auth/hasToken']) {
+            next({ name: 'Home' })
         } else {
             next()
         }

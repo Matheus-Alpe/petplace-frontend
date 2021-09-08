@@ -16,11 +16,10 @@ export default {
     name: "Overlay",
     props: ['user'],
     methods: {
-
-        ...mapActions('auth', ['ActionDeleteUser']),
+        ...mapActions('user', ['deleteUser']),
 
         remove() {
-            this.ActionDeleteUser(this.user)
+            this.deleteUser(this.user)
         },
 
         closeOverlay() {

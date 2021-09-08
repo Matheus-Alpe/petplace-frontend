@@ -1,7 +1,9 @@
-import { routes as home } from '@/pages/home'
+import { routes as pages } from '@/pages'
 import { routes as auth } from '@/modules/auth'
+import { routes as user } from '@/modules/user'
 
 export default [
-    ...home,
+    ...pages,
     ...auth,
+    ...user,
 ]
