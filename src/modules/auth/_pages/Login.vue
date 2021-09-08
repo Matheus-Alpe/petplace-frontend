@@ -189,9 +189,12 @@ export default {
     methods: {
         ...mapActions('auth', [
             'logIn',
-            'setUser',
             'setToken',
             'ActionRegisterUser'
+        ]),
+        
+        ...mapActions('user', [
+            'setUser',
         ]),
 
         previewFiles(event) {
@@ -209,7 +212,7 @@ export default {
                 const { data: { token, user } } = await this.logIn(this.form)
                 this.setToken(token)
                 this.setUser(user)
-                this.$router.push('/')
+                this.$router.push('/profile')
             } catch ({ response }) {
                 this.erros.login = response.data.message || 'Erro no servidor. ):'
             }

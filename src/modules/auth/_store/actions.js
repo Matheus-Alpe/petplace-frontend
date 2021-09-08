@@ -1,65 +1,53 @@
-// import { api } from '@/http'
-import authService from '../../../services/auth'
+import authService from '@/services/auth-service'
 
 import * as storage from '@/utils/storage'
 import * as types from './mutation-types'
-
-// function goTo(path) {
-//     window.location.href = path
-// }
 
 export const logIn = async (_, payload) => {
     return await authService.login(payload)
 }
 
-// export const ActionCheckToken = ({ dispatch, state }) => {
-//     if (state.token) {
-//         return Promise.resolve(state.token)
-//     }
-
-//     const token = storage.getLocalToken()
-
-//     if (!token) {
-//         return Promise.reject(new Error('Token Inválido'))
-//     }
-
-//     dispatch('setToken', token)
-//     return dispatch('ActionLoadSession')
-// }
-
-// export const ActionLoadSession = ({ dispatch }) => {
-//     // eslint-disable-next-line no-async-promise-executor
-//     return new Promise(async (resolve, reject) => {
-//         try {
-//             // const { data: { user } } = await services.auth.loadSession()
-//             // dispatch('setUser', user)
-            
-//             resolve()
-//         } catch (error) {
-//             dispatch('logOut')
-//             reject(error)
-//         }
-//     })
-// }
-
-export const setUser = ({ commit }, payload) => {
-    commit(types.SET_USER, payload)
+export const logOut = ({ dispatch }) => {
+    storage.setHeaderToken('')
+    storage.deleteLocalToken()
+    dispatch('setToken', '')
+    dispatch('user/setUser', {}, { root: true })
 }
 
-// export const ActionRegisterUser = async ({ dispatch }, payload) => {
-//     try {
-//         // const response = await services.auth.registerUser(payload)
-//         // if(response.status === 200) {
-//         //     if (payload.saveImage) {
-//         //         await dispatch('ActionUploadImagem', payload.saveImage)
-//         //     }
-//         //     dispatch('logIn', { ...payload.user })
-//         // }
-//     } catch (error) {
-//         return error && error.body && error.body.erros
-//     }
-    
-// }
+export const setToken = ({ commit }, payload) => {
+    storage.setLocalToken(payload)
+    storage.setHeaderToken(payload)
+    commit(types.SET_TOKEN, payload)
+}
+
+export const checkToken = ({ dispatch, state }) => {
+    if (state.token) {
+        return Promise.resolve(state.token)
+    }
+
+    const token = storage.getLocalToken()
+
+    if (!token) {
+        return Promise.reject(new Error('Token inválido'))
+    }
+
+    dispatch('setToken', token)
+    return dispatch('loadSession')
+}
+
+export const loadSession = ({ dispatch }) => {
+    // eslint-disable-next-line no-async-promise-executor
+    return new Promise(async (resolve, reject) => {
+        try {
+            const { data: { user } } = await authService.loadSession()
+            dispatch('user/setUser', user, { root: true })
+            resolve()
+        } catch (error) {
+            dispatch('logOut')
+            reject(error)
+        }
+    })
+}
 
 // export const ActionUploadImagem = async ({ dispatch }, payload) => {
 //     try {
@@ -71,36 +59,4 @@ export const setUser = ({ commit }, payload) => {
 //     } catch (error) {
 //         console.log(dispatch);
 //     }
-// }
-
-// export const ActionUpdateUser = async () => {
-//     try {
-//         // const { data: { user } } = await services.auth.updateUser(payload)
-//         // dispatch('setUser', user)
-//     } catch (error) {
-//         console.log(error)
-//     }
-// }
-
-// export const ActionDeleteUser = ({ dispatch }) => {
-//     try {
-//         // services.auth.deleteUser({ user: payload })
-//         dispatch('logOut')
-//         goTo('/login')
-//     } catch (error) {
-//         console.log(error)
-//     }
-// }
-
-export const setToken = ({ commit }, payload) => {
-    storage.setLocalToken(payload)
-    storage.setHeaderToken(payload)
-    commit(types.SET_TOKEN, payload)
-}
-
-// export const logOut = ({ dispatch }) => {
-//     storage.setHeaderToken('')
-//     storage.deleteLocalToken()
-//     dispatch('setUser', {})
-//     dispatch('setToken', '')
 // }
