@@ -10,6 +10,6 @@ export default [
     // fallback for invalid endpoints
     {
         path: '*',
-        redirect: '/login'
+        redirect: '/auth/login'
     }
 ]

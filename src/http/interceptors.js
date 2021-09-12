@@ -9,7 +9,7 @@ export const responseInterceptor = (response) => {
     if (response.status === 401) {
         console.log('responseInterceptor:', response)
         store.dispatch('auth/logOut')
-        window._Vue.$router.push({ name: 'login' })
+        window._Vue.$router.push({ path: '/auth/login' })
     }
     return response;
 }
