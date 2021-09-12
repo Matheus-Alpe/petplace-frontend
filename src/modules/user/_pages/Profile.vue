@@ -151,9 +151,13 @@ export default {
     },
     methods: {
         ...mapActions('auth', [
-            'ActionUpdateUser',
             'logOut',
-            'ActionUploadImagem'
+        ]),
+        ...mapActions('user', [
+            'updateUser',
+        ]),
+        ...mapActions([
+            'uploadImage'
         ]),
 
         previewFiles(event) {
@@ -172,10 +176,10 @@ export default {
 
         async submitChanges() {
             if (this.inputFile) {
-                await this.ActionUploadImagem(this.inputFile)
+                await this.uploadImage(this.inputFile)
                 this.dataUser.image = this.inputFile.name
             }
-            this.ActionUpdateUser({ user: this.dataUser })
+            this.updateUser({ user: this.dataUser })
         },
 
         openDropdown() {

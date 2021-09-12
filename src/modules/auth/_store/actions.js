@@ -3,8 +3,10 @@ import authService from '@/services/auth-service'
 import * as storage from '@/utils/storage'
 import * as types from './mutation-types'
 
-export const logIn = async (_, payload) => {
-    return await authService.login(payload)
+export const logIn = async ({ dispatch }, payload) => {
+    const { data: { token, user } } = await authService.login(payload)
+    dispatch('user/setUser', user, { root: true })
+    dispatch('setToken', token)
 }
 
 export const logOut = ({ dispatch }) => {
@@ -48,15 +50,3 @@ export const loadSession = ({ dispatch }) => {
         }
     })
 }
-
-// export const ActionUploadImagem = async ({ dispatch }, payload) => {
-//     try {
-//         // const { data: { user } } = await services.auth.uploadImage(payload)
-//         const formData = new FormData();
-//         formData.append('pic', payload, payload.name)
-//         // await services.auth.uploadImage(formData);
-//         // dispatch('setUser', user)
-//     } catch (error) {
-//         console.log(dispatch);
-//     }
-// }

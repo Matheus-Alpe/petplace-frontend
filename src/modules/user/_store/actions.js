@@ -5,28 +5,30 @@ export const setUser = ({ commit }, payload) => {
     commit(types.SET_USER, payload)
 }
 
-// export const ActionRegisterUser = async ({ dispatch }, payload) => {
-//     try {
-//         // const response = await services.auth.registerUser(payload)
-//         // if(response.status === 200) {
-//         //     if (payload.saveImage) {
-//         //         await dispatch('ActionUploadImagem', payload.saveImage)
-//         //     }
-//         //     dispatch('logIn', { ...payload.user })
-//         // }
-//     } catch (error) {
-//         return error && error.body && error.body.erros
-//     }
-// }
+export const createUser = async ({ dispatch }, payload) => {
+    try {
+        const response = await userService.registerUser(payload)
+        if(response.status === 200) {
+            if (payload.saveImage) {
+                await dispatch('uploadImage', payload.saveImage, { root: true })
+            }
+            dispatch('auth/logIn', { ...payload.user }, { root: true })
+        }
+    } catch (error) {
+        const responseError =  error && error.response
+        const errorMessages = responseError && responseError.data 
+        return errorMessages && errorMessages.erros
+    }
+}
 
-// export const ActionUpdateUser = async () => {
-//     try {
-//         // const { data: { user } } = await services.auth.updateUser(payload)
-//         // dispatch('setUser', user)
-//     } catch (error) {
-//         console.log(error)
-//     }
-// }
+export const updateUser = async ({ dispatch }, payload) => {
+    try {
+        const { data: { user } } = await userService.updateUser(payload)
+        dispatch('setUser', user)
+    } catch (error) {
+        console.log(error)
+    }
+}
 
 export const deleteUser = async ({ dispatch }, payload) => {
     try {

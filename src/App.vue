@@ -15,7 +15,8 @@ export default {
 
     watch: {
         hasToken(has) {
-            if(!has) this.$router.push('/login')
+            if(!has) return this.$router.push('/login')
+            this.$router.push('/profile')
         }
     }
 }

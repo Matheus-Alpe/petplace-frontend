@@ -9,6 +9,7 @@ export default async (to, from, next) => {
             next({ name: to.name })
         } catch (error) {
             store.dispatch('auth/logOut')
+            next({ name: 'Login' })
         }
     } else {
         if (to.name === 'Login' && store.getters['auth/hasToken']) {

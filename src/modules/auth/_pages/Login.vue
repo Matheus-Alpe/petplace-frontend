@@ -190,11 +190,11 @@ export default {
         ...mapActions('auth', [
             'logIn',
             'setToken',
-            'ActionRegisterUser'
         ]),
         
         ...mapActions('user', [
             'setUser',
+            'createUser'
         ]),
 
         previewFiles(event) {
@@ -209,10 +209,7 @@ export default {
 
         async userLogin() {
              try {
-                const { data: { token, user } } = await this.logIn(this.form)
-                this.setToken(token)
-                this.setUser(user)
-                this.$router.push('/profile')
+                await this.logIn(this.form)
             } catch ({ response }) {
                 this.erros.login = response.data.message || 'Erro no servidor. ):'
             }
@@ -224,7 +221,7 @@ export default {
                 if (this.inputFile) {
                     this.register.image = this.inputFile.name
                 }
-                const response = await this.ActionRegisterUser({ 
+                const response = await this.createUser({ 
                     user: this.register,
                     saveImage: this.inputFile
                 })

@@ -6,4 +6,10 @@ export default [
     ...pages,
     ...auth,
     ...user,
+
+    // fallback for invalid endpoints
+    {
+        path: '*',
+        redirect: '/login'
+    }
 ]
