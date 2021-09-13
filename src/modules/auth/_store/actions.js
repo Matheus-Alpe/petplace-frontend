@@ -4,9 +4,13 @@ import * as storage from '@/utils/storage'
 import * as types from './mutation-types'
 
 export const logIn = async ({ dispatch }, payload) => {
-    const { data: { token, user } } = await authService.login(payload)
-    dispatch('user/setUser', user, { root: true })
-    dispatch('setToken', token)
+    try {
+        const { data: { token, user } } = await authService.login(payload)
+        dispatch('user/setUser', user, { root: true })
+        dispatch('setToken', token)
+    } catch (error) {
+        console.log(e)
+    }
 }
 
 export const logOut = ({ dispatch }) => {
