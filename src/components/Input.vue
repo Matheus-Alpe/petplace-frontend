@@ -61,6 +61,22 @@ export default {
     color: rgba(51, 51, 51, 0.63);
     margin: 15px 0;
 
+    input {
+        outline: none;
+        font-size: 1rem;
+        background-color: #fff;
+        width: 90%;
+        border: none;
+        padding: 0 20px;
+        line-height: 3;
+        border: 2px solid rgba(0, 0, 0, 0.548);
+        border-radius: 5px;
+
+        &:focus {
+            border-color: aqua;
+        }
+    }
+
     .placeholder {
         position: absolute;
         line-height: 1.4;

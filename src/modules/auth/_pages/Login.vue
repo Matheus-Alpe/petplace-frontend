@@ -1,8 +1,8 @@
 <template>
     <div class="login">
-        <PetLogo class="center"/>
 
         <form @submit.prevent="userLogin">
+            <PetLogo class="center"/>
             
 			<PetInput 
 				label="Email"
@@ -21,12 +21,22 @@
                 @remove-error="removeError"
                 :isLoginPage="true"
 			/>
+            
             <sub :class="{ opacity: !erros.login }" class="text-error">
                 * {{ erros.login }}
             </sub>
+
             <div class="button-container">
-                <button type="submit" class="button-main">Login</button>
-                <router-link to="/auth/register" class="button-secondary">Cadastrar-se</router-link>
+                <PetButton 
+                    class="main"
+                    type="submit"
+                    label="Login"
+                />
+                    
+                <PetLink
+                    to="/auth/register" 
+                    label="Cadastrar-se"
+                />
             </div>
         </form>
     </div>
@@ -37,13 +47,17 @@ import { mapActions } from 'vuex'
 
 import PetLogo from '@/components/Logo.vue'
 import PetInput from '@/components/Input.vue'
+import PetButton from '@/components/Button.vue'
+import PetLink from '@/components/Link.vue'
 
 export default {
     name: 'Login',
     
     components: {
         PetLogo,
-        PetInput
+        PetInput,
+        PetButton,
+        PetLink
     },
 
     data: () => ({
@@ -54,7 +68,6 @@ export default {
         erros: {
             login: '',
         },
-        inputFile: null,
     }),
 
     methods: {
@@ -78,3 +91,9 @@ export default {
     }
 }
 </script>
+
+<style lang="scss">
+.text-error {
+    color: red !important;
+}
+</style>

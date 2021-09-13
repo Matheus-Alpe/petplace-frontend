@@ -2,6 +2,8 @@
 	<div class="register">
 
 		<form @submit.prevent="registerIn">
+			<PetLink to="/auth/login"  label="Login"/>
+
 			<PetInputImage 
 				class="center"
 				@image-selected="setRegisterAttribute('inputFile', $event)" 
@@ -47,10 +49,11 @@
 				:noMatch="!isValid"
 			/>
 
-			
-			<div class="button-container" id="cadastrar">
-				<button type="submit" class="button-main">Cadastrar</button>
-			</div>
+			<PetButton 
+				class="secondary"
+				type="submit" 
+				label="Cadastrar"
+			/>
 		</form>
 	</div>
 </template>
@@ -60,13 +63,17 @@ import { mapActions } from 'vuex';
 
 import PetInputImage from '@/components/InputImage.vue'
 import PetInput from '@/components/Input.vue'
+import PetButton from '@/components/Button.vue'
+import PetLink from '@/components/Link.vue'
 
 export default {
 	name: 'Register',
 
 	components: {
 		PetInputImage,
-		PetInput
+		PetInput,
+		PetButton,
+		PetLink
 	},
 
 	data: () => ({
