@@ -1,83 +1,53 @@
 <template>
 	<div class="register">
-		<div class="owner-avatar logo logo-secondary" :style="imageUrl">
-			<div class="img-selector">
-				<label for="image">
-					<i class="material-icons md-24">add_a_photo</i>
-				</label>
-				<input
-					@change="previewFiles"
-					type="file"
-					name="image"
-					id="image"
-					accept="image/*"
-				/>
-			</div>
-		</div>
+
 		<form @submit.prevent="registerIn">
-			<label for="name" class="custom-input"
-				><span class="placeholder">Nome Completo</span>
-				<input
-					type="name"
-					name="name"
-					id="name"
-					v-model="register.name"
-					required
-				/>
-			</label>
-			<label for="cpf" class="custom-input">
-				<span class="placeholder">
-					CPF
-					<span v-if="erros.cpf"> - {{ erros.cpf }} </span>
-				</span>
-				<input
-					:class="{ error: !!erros.cpf }"
-					@input="removeError('cpf')"
-					type="text"
-					cpf="cpf"
-					id="cpf"
-					v-model="register.cpf"
-					required
-				/>
-			</label>
-			<label for="email" class="custom-input">
-				<span class="placeholder">
-					Email
-					<span v-if="erros.email"> - {{ erros.email }} </span>
-				</span>
-				<input
-					:class="{ error: !!erros.email }"
-					@input="removeError('email')"
-					type="email"
-					name="email"
-					id="email"
-					v-model="register.email"
-					required
-				/>
-			</label>
-			<label for="password" class="custom-input"
-				><span class="placeholder">Senha</span>
-				<input
-					type="password"
-					name="password"
-					id="password-register"
-					v-model="register.password"
-					autocomplete="on"
-					required
-				/>
-			</label>
-			<label for="confirmation" class="custom-input"
-				><span class="placeholder">Confirmar Senha</span>
-				<input
-					:class="{ error: !isValid }"
-					type="password"
-					name="confirmation"
-					id="confirmation-register"
-					v-model="register.confirmation"
-					autocomplete="on"
-					required
-				/>
-			</label>
+			<PetInputImage 
+				class="center"
+				@image-selected="setRegisterAttribute('inputFile', $event)" 
+			/>
+
+			<PetInput 
+				label="Nome Completo"
+				id="name"
+				type="text"
+				@change-attribute="setRegisterAttribute('name', $event)"
+			/>
+
+			<PetInput 
+				label="CPF"
+				id="cpf"
+				type="text"
+				@change-attribute="setRegisterAttribute('cpf', $event)"
+				@remove-error="removeError"
+				:error="errors.cpf"
+			/>
+
+			<PetInput 
+				label="Email"
+				id="email"
+				type="email"
+				@change-attribute="setRegisterAttribute('email', $event)"
+				@remove-error="removeError"
+				:error="errors.email"
+			/>
+
+			<PetInput 
+				label="Senha"
+				id="password"
+				type="password"
+				@change-attribute="setRegisterAttribute('password', $event)"
+			/>
+
+			<PetInput 
+				label="Confirmar Senha"
+				id="confirmation"
+				type="password"
+				@change-attribute="setRegisterAttribute('confirmation', $event)"
+				:noMatch="!isValid"
+			/>
+
+			
 			<div class="button-container" id="cadastrar">
 				<button type="submit" class="button-main">Cadastrar</button>
 			</div>
@@ -88,7 +58,17 @@
 <script>
 import { mapActions } from 'vuex';
 
+import PetInputImage from '@/components/InputImage.vue'
+import PetInput from '@/components/Input.vue'
+
 export default {
+	name: 'Register',
+
+	components: {
+		PetInputImage,
+		PetInput
+	},
+
 	data: () => ({
 		register: {
 			name: '',
@@ -98,9 +78,10 @@ export default {
 			password: '',
 			confirmation: '',
 		},
-		erros: {
+		errors: {
 			email: '',
 			cpf: '',
+			confirmation: false,
 		},
 		inputFile: null,
 	}),
@@ -114,32 +95,19 @@ export default {
             );
         },
 
-        imageUrl() {
-            const image =
-                (this.inputFile && URL.createObjectURL(this.inputFile)) ||
-                require('@/assets/icons/default-profile.svg');
-            return {
-                backgroundImage: `url(${image})`,
-            };
-        },
     },
 
     methods: {
         ...mapActions('user', ['createUser']),
 
-        previewFiles(event) {
-            const file = event.target.files[0];
-            const providerImage = 'http://localhost:5000/static/users/';
-            Object.defineProperty(file, 'name', {
-                writable: true,
-                value: `${providerImage}d${new Date()
-                    .toISOString()
-                    .replace(/[^\w\s]/gi, '')}.${file.type.split('/')[1]}`,
-            });
-            this.inputFile = file;
-        },
+		setRegisterAttribute(attribute, value) {
+			if (attribute === 'inputFile') {
+				this['inputFile'] = value
+				return
+			}
 
-       
+			this.register[attribute] = value
+		},
 
         async registerIn() {
             if (!this.isValid) return;
@@ -152,7 +120,7 @@ export default {
                     saveImage: this.inputFile,
                 });
                 if (response) {
-                    this.erros = response;
+                    this.errors = response;
                     return;
                 }
             } catch (error) {
@@ -161,7 +129,10 @@ export default {
         },
 
         removeError(typeError) {
-            this.erros[typeError] = '';
+			if (typeError === 'confirmation') {
+				this.errors[typeError] = true;
+			}
+            this.errors[typeError] = '';
         },
     },
 };

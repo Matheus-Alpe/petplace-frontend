@@ -11,28 +11,6 @@ export default {
 </script>
 
 <style lang='scss'>
-.owner-avatar {
-    background-color: rgb(92, 92, 92);
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center;
-
-    width: 125px;
-    height: 125px;
-    border-radius: 50%;
-}
-
-.img-selector {
-    position: absolute;
-    bottom: 10px;
-    right: 15px;
-    color: white;
-}
-
-input[type='file'] {
-    display: none;
-}
-
 .container {
     min-height: 100vh;
     display: grid;
@@ -46,22 +24,6 @@ input[type='file'] {
     height: 100%;
 }
 
-.logo {
-    position: absolute;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    padding: 1rem 0 0;
-}
-
-.logo-main {
-    height: 40%;
-}
-
-.logo-secondary {
-    top: 4%;
-}
-
 .opacity {
     opacity: 0;
 }
@@ -72,17 +34,7 @@ input[type='file'] {
 
 .login,
 .register {
-    display: grid;
-    align-items: center;
-    padding-top: calc(100% - 50%);
-}
-
-.login {
-    padding-top: calc(100% - 50%);
-}
-
-form {
-    min-height: 50%;
+    text-align: center;
 }
 
 form input {
@@ -97,30 +49,9 @@ form input {
     border-radius: 5px;
 }
 
-.error {
-    border: 2px solid rgba(255, 0, 0, 0.548) !important;
-}
-
 form input:focus,
 .button-container button:focus {
     border-color: aqua;
-}
-
-.custom-input {
-    display: block;
-    color: rgba(51, 51, 51, 0.63);
-    margin: 15px 0;
-}
-
-.placeholder {
-    position: absolute;
-    line-height: 1.4;
-    top: -15%;
-    padding: 0 5px;
-    margin-left: 5px;
-    z-index: 2;
-    background-color: #fff;
-    font-size: 0.8rem;
 }
 
 .button-container button {
