@@ -255,14 +255,14 @@ export default {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 10px;
-    padding: 20px 16px 60px;
 }
 
 .owner__pet-card {
-    padding: 50px 0;
+    aspect-ratio: 1;
     display: flex;
     justify-content: center;
     align-items: center;
+    background: red;
     box-shadow: 0 4px 8px 0 rgba(160, 121, 121, 0.2);
     transition: 0.3s;
     opacity: 0.5;

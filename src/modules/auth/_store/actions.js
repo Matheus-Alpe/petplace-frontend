@@ -9,7 +9,7 @@ export const logIn = async ({ dispatch }, payload) => {
         dispatch('user/setUser', user, { root: true })
         dispatch('setToken', token)
     } catch (error) {
-        console.log(e)
+        console.log(error)
     }
 }
 
