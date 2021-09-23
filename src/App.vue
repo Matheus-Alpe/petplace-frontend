@@ -23,7 +23,7 @@ export default {
 </script>
 
 
-<style lang="scss" scoped>
+<style lang="scss">
 #app {
   max-width: 400px;
   margin: 0 auto;

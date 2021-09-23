@@ -3,7 +3,7 @@
         class="petplace-link"
         :to="to"
     >
-        {{ label }}
+        <slot />
     </router-link>
 </template>
 
@@ -11,8 +11,14 @@
 export default {
     name: 'Link',
     props: {
-        label: String,
         to: String
     },
 }
 </script>
+
+<style scoped>
+.petplace-link {
+    text-decoration: none;
+    color: black;
+}
+</style>

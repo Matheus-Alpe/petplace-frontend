@@ -1,5 +1,8 @@
 <template>
-    <label :for="id" class="petplace-input">
+    <label 
+        :for="id" 
+        class="petplace-input"
+    >
         <span class="placeholder">
             {{ label }}
             <span v-if="error"> - {{ error }} </span>
@@ -64,7 +67,7 @@ export default {
     input {
         outline: none;
         font-size: 1rem;
-        background-color: #fff;
+        background-color: var(--input-bg);
         width: 90%;
         border: none;
         padding: 0 20px;
@@ -75,6 +78,14 @@ export default {
         &:focus {
             border-color: aqua;
         }
+
+        /* Change the white to any color */
+        &:-webkit-autofill,
+        &:-webkit-autofill:hover, 
+        &:-webkit-autofill:focus, 
+        &:-webkit-autofill:active {
+            -webkit-box-shadow: 0 0 0 30px var(--input-bg) inset !important;
+        }
     }
 
     .placeholder {
@@ -84,7 +95,7 @@ export default {
         padding: 0 5px;
         margin-left: 5px;
         z-index: 2;
-        background-color: #fff;
+        background-color: var(--input-bg);
         font-size: 0.8rem;
     }
 

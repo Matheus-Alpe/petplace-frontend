@@ -20,7 +20,7 @@ export default {
     outline: none;
     text-transform: uppercase;
     width: 70%;
-    margin: 1rem 0;
+    margin: 1rem auto;
     padding: 1rem 0;
     border-radius: 50px;
     border: 2px solid transparent;

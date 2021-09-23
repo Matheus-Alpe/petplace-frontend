@@ -2,7 +2,9 @@
 	<div class="register">
 
 		<form @submit.prevent="registerIn">
-			<PetLink to="/auth/login"  label="Login"/>
+			<PetLink to="/auth/login">
+				<img src="@/assets/icons/login.svg" alt="login">
+			</PetLink>
 
 			<PetInputImage 
 				class="center"
@@ -145,5 +147,21 @@ export default {
 };
 </script>
 
-<style>
+<style lang="scss">
+.register {
+
+	.petplace-link {
+		display: block;
+		position: absolute;
+		padding: 10px 10px 10px 0;
+		background: #8c8c8c;
+		left: 0;
+		top: 0;
+		border-radius: 0 0 90% 0;
+		
+		img {
+			max-width: 100%;
+		}
+	}
+}
 </style>

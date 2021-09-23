@@ -26,18 +26,15 @@
                 * {{ erros.login }}
             </sub>
 
-            <div class="button-container">
-                <PetButton 
-                    class="main"
-                    type="submit"
-                    label="Login"
-                />
-                    
-                <PetLink
-                    to="/auth/register" 
-                    label="Cadastrar-se"
-                />
-            </div>
+            <PetButton 
+                class="main"
+                type="submit"
+                label="Login"
+            />
+                
+            <PetLink to="/auth/register">
+                Cadastrar-se
+            </PetLink>
         </form>
     </div>
 </template>
@@ -93,7 +90,18 @@ export default {
 </script>
 
 <style lang="scss">
-.text-error {
-    color: red !important;
+.login {
+    display: flex;
+    align-items: center;
+
+    form {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+
+        .text-error {
+            color: red !important;
+        }
+    }
 }
 </style>

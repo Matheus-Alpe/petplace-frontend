@@ -2,7 +2,7 @@
     <div class="petplace-avatar" :style="imageUrl">
         <div class="petplace-image-selector">
             <label for="image">
-                <i class="material-icons md-24">add_a_photo</i>
+                <span class="material-icons md-24">add_a_photo</span>
             </label>
             <input
                 @change="previewFiles"

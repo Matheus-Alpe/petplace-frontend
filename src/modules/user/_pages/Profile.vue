@@ -1,33 +1,16 @@
 <template>
-    <div class="home">
+    <div class="home" @click="checkDropdown">
         <div class="owner__profile">
             <div class="owner__info-container">
                 <div class="dropdown">
-                    <svg
+                    <img 
                         @click="openDropdown()"
+                        src="@/assets/icons/config_icon.svg"
                         class="config-button"
                         alt="config button"
-                        width="18"
-                        height="5"
-                        viewBox="0 0 18 5"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
                     >
-                        <path
-                            d="M5.09434 2.5C5.09434 3.88071 3.95393 5 2.54717 5C1.14041 5 0 3.88071 0 2.5C0 1.11929 1.14041 0 2.54717 0C3.95393 0 5.09434 1.11929 5.09434 2.5Z"
-                            fill="black"
-                        />
-                        <path
-                            d="M11.5472 2.5C11.5472 3.88071 10.4068 5 9 5C7.59324 5 6.45283 3.88071 6.45283 2.5C6.45283 1.11929 7.59324 0 9 0C10.4068 0 11.5472 1.11929 11.5472 2.5Z"
-                            fill="black"
-                        />
-                        <path
-                            d="M18 2.5C18 3.88071 16.8596 5 15.4528 5C14.0461 5 12.9057 3.88071 12.9057 2.5C12.9057 1.11929 14.0461 0 15.4528 0C16.8596 0 18 1.11929 18 2.5Z"
-                            fill="black"
-                        />
-                    </svg>
 
-                    <div class="dropdown-content">
+                    <div class="dropdown-content" ref="dropdownContent">
                         <p @click="showForm">Editar Perfil</p>
                         <p @click="openOverlay">Excluir Perfil</p>
                         <p @click="userLogOut">Sair</p>
@@ -182,17 +165,28 @@ export default {
             this.updateUser({ user: this.dataUser })
         },
 
+        checkDropdown(event) {
+            if (event.target.classList.contains('config-button')) return
+            this.closeDropdown()
+        },
+
         openDropdown() {
-            document.querySelector(".dropdown-content").style.display = "block";
+            const dropdown = this.$refs.dropdownContent
+            if (dropdown) {
+                dropdown.style.display = 'block'
+            }
         },
 
         closeDropdown() {
-            document.querySelector(".dropdown-content").style.display = "none";
+            const dropdown = this.$refs.dropdownContent
+             if (dropdown) {
+                dropdown.style.display = 'none'
+            }
         },
 
         openOverlay() {
             this.closeDropdown();
-            document.getElementById("excludeOverlay").style.display = "block";
+            document.getElementById("excludeOverlay").style.display = 'block'
         },
 
         showForm(type) {
