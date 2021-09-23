@@ -1,6 +1,6 @@
 <template>
     <div class="petplace-avatar" :style="imageUrl">
-        <div class="petplace-image-selector">
+        <div class="petplace-image-selector" v-if="showInput">
             <label for="image">
                 <span class="material-icons md-24">add_a_photo</span>
             </label>
@@ -19,6 +19,15 @@
 export default {
     name: 'InputImage',
 
+    props: {
+        showInput: {
+            type: Boolean,
+            default: true
+        },
+
+        imgUrl: String
+    },
+
     data() {
         return {
             imgInput: null
@@ -28,7 +37,7 @@ export default {
     computed: {
         imageUrl() {
             const image =
-                (this.imgInput && URL.createObjectURL(this.imgInput)) ||
+                (this.imgInput && URL.createObjectURL(this.imgInput)) || this.imgUrl ||
                 require('@/assets/icons/default-profile.svg');
             return {
                 backgroundImage: `url(${image})`,

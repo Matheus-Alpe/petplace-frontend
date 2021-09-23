@@ -16,16 +16,13 @@
                         <p @click="userLogOut">Sair</p>
                     </div>
                 </div>
-                <div 
-                    class="owner-avatar" 
-                    :style="{ backgroundImage: 'url(' + (imageUrl ? imageUrl : user.image) + ')' }">
-                    <div class="img-selector" v-if="displayForm">
-                        <label for="image">
-                            <i class="material-icons md-24">add_a_photo</i>
-                        </label>
-                        <input @change="previewFiles" type="file" name="image" id="image" accept="image/*">
-                    </div>
-                </div>
+
+                <PetInputImage 
+                    class="center"
+                    :show-input="displayForm"
+                    :img-url="dataUser && dataUser.image"
+                    @image-selected="setRegisterAttribute('inputFile', $event)" 
+                />
                 
                 <h2 class="main-owner-name" v-if="!displayForm">{{ user.name }}</h2>
 
@@ -85,40 +82,28 @@
               
                 <div class="owner__pet-card register">
                     <a href="./pet-register.html" class="add-pet">
-                        <svg
-                            alt="adicionar pet"
-                            width="33"
-                            height="34"
-                            viewBox="0 0 33 34"
-                            fill="none"
-                            xmlns="http://www.w3.org/2000/svg"
-                        >
-                            <path
-                                d="M16.9285 3L16.5 31M30 17.2153H3"
-                                stroke="black"
-                                stroke-width="5"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                            />
-                        </svg>
+                        <img src="@/assets/icons/plus.svg" alt="adicionar pet">
+                        
                     </a>
                 </div>
             </div>
         </div>
 
         <!-- The overlay -->
-        <overlay :user="dataUser"></overlay>
+        <Overlay :user="dataUser" />
     </div>
 </template>
 
 <script>
 import { mapState, mapActions } from 'vuex'
 import Overlay from "@/components/Overlay.vue";
+import PetInputImage from '@/components/InputImage.vue'
 
 export default {
     name: "Profile",
     components: {
-        Overlay
+        Overlay,
+        PetInputImage
     },
     data: () => ({
         dataUser: null,
@@ -143,15 +128,14 @@ export default {
             'uploadImage'
         ]),
 
-        previewFiles(event) {
-            const file = event.target.files[0]
-            const providerImaeg = 'http://localhost:5000/static/users/'
-            Object.defineProperty(file, 'name', {
-                writable: true,
-                value: `${providerImaeg}${this.dataUser.id}${new Date().toISOString().replace(/[^\w\s]/gi, '')}.${file.type.split('/')[1]}`
-            });
-            this.inputFile = file
-        },
+        setRegisterAttribute(attribute, value) {
+			if (attribute === 'inputFile') {
+				this['inputFile'] = value
+				return
+			}
+
+			this.dataUser[attribute] = value
+		},
 
         userLogOut() {
             this.logOut()
