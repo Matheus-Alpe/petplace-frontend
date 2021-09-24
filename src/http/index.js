@@ -3,8 +3,7 @@ import { responseInterceptor } from './interceptors'
 
 let config = {
     baseURL: 'http://localhost:5000',
-    timeout: 60 * 1000, // Timeout
-    // withCredentials: true, // Check cross-site Access-Control
+    timeout: 60 * 1000,
 }
 
 const api = axios.create(config)

@@ -72,13 +72,12 @@
             </div>
 
             <div class="owner__pets-container">
-        
-                <div class="owner__pet-card register">
-                    <a href="./pet-register.html" class="add-pet">
-                        <img src="@/assets/icons/plus.svg" alt="adicionar pet">
-                        
-                    </a>
-                </div>
+                <PetLink
+                    to="/pet/register"
+                    class="owner__pet-card register"
+                >
+                    <img src="@/assets/icons/plus.svg" alt="adicionar pet">
+                </PetLink>
             </div>
         </div>
 
@@ -89,16 +88,20 @@
 
 <script>
 import { mapState, mapActions } from 'vuex'
+
 import Overlay from "@/components/Overlay.vue";
 import PetInputImage from '@/components/InputImage.vue'
 import PetInput from '@/components/Input.vue'
+import PetLink from '@/components/Link.vue'
+
 
 export default {
     name: "Profile",
     components: {
         Overlay,
         PetInputImage,
-        PetInput
+        PetInput,
+        PetLink
     },
     data: () => ({
         dataUser: null,
@@ -203,24 +206,6 @@ export default {
     h2 {
         margin-top: 1em;
     }
-}
-
-.owner-avatar {
-    background-color: #fff;
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center;
-
-    width: 125px;
-    height: 125px;
-    border-radius: 50%;
-}
-
-.img-selector {
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    color: white;
 }
 
 .owner__pets-container {
