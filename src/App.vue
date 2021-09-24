@@ -2,13 +2,21 @@
     <div id="app">
       
         <router-view/>
+
+        <PetNav v-if="hasToken" />
     </div>
 </template>
 
 <script>
 import { mapGetters} from 'vuex'
 
+import PetNav from '@/components/Nav.vue'
+
 export default {
+    components: {
+        PetNav
+    },
+
     computed: {
         ...mapGetters('auth', ['hasToken'])
     },
@@ -25,7 +33,8 @@ export default {
 
 <style lang="scss">
 #app {
-  max-width: 400px;
-  margin: 0 auto;
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto;
 }
 </style>

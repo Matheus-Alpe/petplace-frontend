@@ -4,13 +4,12 @@ import * as storage from '@/utils/storage'
 import * as types from './mutation-types'
 
 export const logIn = async ({ dispatch }, payload) => {
-    try {
-        const { data: { token, user } } = await authService.login(payload)
-        dispatch('user/setUser', user, { root: true })
-        dispatch('setToken', token)
-    } catch (error) {
-        console.log(error)
+    const { data } = await authService.login(payload)
+    if (data.status && data.status > 400) {
+        return data
     }
+    dispatch('user/setUser', data.user, { root: true })
+    dispatch('setToken', data.token)
 }
 
 export const logOut = ({ dispatch }) => {

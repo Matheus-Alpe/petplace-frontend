@@ -61,14 +61,14 @@ export default {
 <style lang="scss">
 .petplace-input {
     display: block;
-    color: rgba(51, 51, 51, 0.63);
+    color: black;;
     margin: 15px 0;
 
     input {
         outline: none;
         font-size: 1rem;
         background-color: var(--input-bg);
-        width: 90%;
+        width: 100%;
         border: none;
         padding: 0 20px;
         line-height: 3;

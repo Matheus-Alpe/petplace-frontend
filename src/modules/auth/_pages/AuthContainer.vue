@@ -22,6 +22,11 @@ export default {
 
 .container > div {
     height: 100%;
+
+    > form {
+        width: 90%;
+        margin: 0 auto;
+    }
 }
 
 .opacity {

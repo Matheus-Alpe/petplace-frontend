@@ -1,10 +1,10 @@
 <template>
 	<div class="register">
+		<PetLink to="/auth/login">
+			<img src="@/assets/icons/login.svg" alt="login">
+		</PetLink>
 
 		<form @submit.prevent="registerIn">
-			<PetLink to="/auth/login">
-				<img src="@/assets/icons/login.svg" alt="login">
-			</PetLink>
 
 			<PetInputImage 
 				class="center"
@@ -149,6 +149,8 @@ export default {
 
 <style lang="scss">
 .register {
+	display: flex;
+	align-items: center;
 
 	.petplace-link {
 		display: block;
