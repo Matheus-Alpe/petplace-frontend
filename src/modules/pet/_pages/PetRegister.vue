@@ -1,184 +1,186 @@
 <template>
-    <form class="register">
+    <div class="container">
         <h1>Cadastro de Pet</h1>
+        <form class="register">
 
-        <div 
-            class="step-form 1"
-            v-if="formStep === 0"
-        >
-            <h3>1/3:</h3>
-            
-			<PetInput 
-				label="Nome do Pet"
-				id="name"
-				type="text"
-                :initial-value="register.name"
-				@change-attribute="setRegisterAttribute('name', $event)"
-			/>
+            <div 
+                class="step-form 1"
+                v-if="formStep === 0"
+            >
+                <h3>1/3:</h3>
+                
+                <PetInput 
+                    label="Nome do Pet"
+                    id="name"
+                    type="text"
+                    :initial-value="register.name"
+                    @change-attribute="setRegisterAttribute('name', $event)"
+                />
 
-			<PetInput 
-				label="Idade (opcional)"
-				id="age"
-				type="number"
-                :is-required="false"
-                :initial-value="register.age"
-				@change-attribute="setRegisterAttribute('age', $event)"
-			/>
+                <PetInput 
+                    label="Idade (opcional)"
+                    id="age"
+                    type="number"
+                    :is-required="false"
+                    :initial-value="register.age"
+                    @change-attribute="setRegisterAttribute('age', $event)"
+                />
 
-            <PetInput 
-				label="Data de Nascimento (opcional)"
-				id="birthday"
-				type="date"
-                :is-required="false"
-                :initial-value="register.birthday"
-				@change-attribute="setRegisterAttribute('birthday', $event)"
-			/>
+                <PetInput 
+                    label="Data de Nascimento (opcional)"
+                    id="birthday"
+                    type="date"
+                    :is-required="false"
+                    :initial-value="register.birthday"
+                    @change-attribute="setRegisterAttribute('birthday', $event)"
+                />
 
-            <div class="actions">
-                <a 
-                    @click="formStep++"
-                >
-                    Próximo
-                </a>
-            </div>
-        </div>
-
-        <div 
-            class="step-form 2"
-            v-if="formStep === 1"
-        >
-            <h3>2/3:</h3>
-
-			<div class="pet-radio-group">
-                <label>Sexo:</label>
-
-                <span class="pet-check">
-                    <input
-                        type="radio"
-                        class="pet-check-input"
-                        value="M"
-                        id="masculino"
-                        v-model="register.sex"
-                        required
-                    />
-                    <label 
-                        class="pet-check-label" 
-                        for="masculino"
+                <div class="actions">
+                    <span 
+                        @click="formStep++"
                     >
-                        Masculino
-                    </label>
-                </span>
+                        Próximo
+                    </span>
+                </div>
+            </div>
 
-                <span class="pet-check">
-                    <input
-                        type="radio"
-                        class="pet-check-input"
-                        value="F"
-                        id="feminino"
-                        v-model="register.sex"
-                    />
-                    <label 
-                        class="pet-check-label" 
-                        for="feminino"
+            <div 
+                class="step-form 2"
+                v-if="formStep === 1"
+            >
+                <h3>2/3:</h3>
+
+                <div class="pet-radio-group">
+                    <label>Sexo:</label>
+
+                    <span class="pet-check">
+                        <input
+                            type="radio"
+                            class="pet-check-input"
+                            value="M"
+                            id="masculino"
+                            v-model="register.sex"
+                            required
+                        />
+                        <label 
+                            class="pet-check-label" 
+                            for="masculino"
+                        >
+                            Masculino
+                        </label>
+                    </span>
+
+                    <span class="pet-check">
+                        <input
+                            type="radio"
+                            class="pet-check-input"
+                            value="F"
+                            id="feminino"
+                            v-model="register.sex"
+                        />
+                        <label 
+                            class="pet-check-label" 
+                            for="feminino"
+                        >
+                            Feminino
+                        </label>
+                    </span>
+                </div>
+
+                <div class="pet-select-group">
+                    <label>Tipo:</label>
+                    <select
+                        class="pet-control"
+                        v-model="register.type"
                     >
-                        Feminino
-                    </label>
-                </span>
-            </div>
+                        <option 
+                            v-for="(type, index) in types"
+                            :key="index"
+                            :value="type.value"
+                        >
+                            {{ type.value }}
+                        </option>
+                    </select>
+                </div>
 
-            <div class="pet-select-group">
-                <label>Tipo:</label>
-                <select
-                    class="pet-control"
-                    v-model="register.type"
-                >
-                    <option 
-                        v-for="(type, index) in types"
-                        :key="index"
-                        :value="type.value"
+                <div class="pet-select-group">
+                    <label>Raça:</label>
+                    <select
+                        class="pet-control"
+                        v-model="register.breed"
                     >
-                        {{ type.value }}
-                    </option>
-                </select>
-            </div>
+                        <option 
+                            v-for="(breed, index) in breedList"
+                            :key="index"
+                            :value="breed"
+                        >
+                            {{ breed }}
+                        </option>
+                    </select>
+                </div>
 
-            <div class="pet-select-group">
-                <label>Raça:</label>
-                <select
-                    class="pet-control"
-                    v-model="register.breed"
-                >
-                    <option 
-                        v-for="(breed, index) in breedList"
-                        :key="index"
-                        :value="breed"
+                <div class="pet-select-group">
+                    <label>Porte:</label>
+                    <select
+                        class="pet-control"
+                        v-model="register.size"
                     >
-                        {{ breed }}
-                    </option>
-                </select>
-            </div>
+                        <option 
+                            v-for="(size, index) in sizes"
+                            :key="index"
+                            :value="size"
+                        >
+                            {{ size }}
+                        </option>
+                    </select>
+                </div>
 
-            <div class="pet-select-group">
-                <label>Porte:</label>
-                <select
-                    class="pet-control"
-                    v-model="register.size"
-                >
-                    <option 
-                        v-for="(size, index) in sizes"
-                        :key="index"
-                        :value="size"
+                <div class="actions">
+                    <span 
+                        @click="formStep--"
                     >
-                        {{ size }}
-                    </option>
-                </select>
+                        Voltar
+                    </span>
+
+                    <span
+                        @click="formStep++"
+                    >
+                        Próximo
+                    </span>
+                </div>
             </div>
 
-            <div class="actions">
-                <a 
-                    @click="formStep--"
-                >
-                    Voltar
-                </a>
+            <div
+                class="step-form 3"
+                v-if="formStep === 2"
+            >
+                <h3>3/3:</h3>
+                <PetInputImage 
+                    image-type="pet"
+                    class="center"
+                    @image-selected="setRegisterAttribute('inputFile', $event)"
+                />
 
-                <a 
-                    @click="formStep++"
-                >
-                    Próximo
-                </a>
-            </div>
-        </div>
+                <div class="actions">
+                    <span 
+                        @click="formStep--"
+                    >
+                        Voltar
+                    </span>
+                </div>
 
-        <div
-            class="step-form 3"
-            v-if="formStep === 2"
-        >
-            <h3>3/3:</h3>
-            <PetInputImage 
-                image-type="pet"
-                class="center"
-                @image-selected="setRegisterAttribute('inputFile', $event)"
-            />
-
-            <div class="actions">
-                <a 
-                    @click="formStep--"
-                >
-                    Voltar
-                </a>
+                <PetButton 
+                    class="secondary"
+                    type="submit" 
+                    label="Cadastrar"
+                />
             </div>
 
-			<PetButton 
-				class="secondary"
-				type="submit" 
-				label="Cadastrar"
-			/>
-        </div>
-
-        <PetLink to="/profile">
-            Cancelar
-		</PetLink>
-    </form>
+            <PetLink to="/profile">
+                Cancelar
+            </PetLink>
+        </form>
+    </div>
 </template>
 
 <script>
