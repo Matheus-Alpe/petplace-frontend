@@ -2,13 +2,17 @@
     <form class="register">
         <h1>Cadastro de Pet</h1>
 
-        <div class="step-form 1">
+        <div 
+            class="step-form 1"
+            v-if="formStep === 0"
+        >
             <h3>1/3:</h3>
             
 			<PetInput 
 				label="Nome do Pet"
 				id="name"
 				type="text"
+                :initial-value="register.name"
 				@change-attribute="setRegisterAttribute('name', $event)"
 			/>
 
@@ -16,7 +20,8 @@
 				label="Idade (opcional)"
 				id="age"
 				type="number"
-                :isRequired="false"
+                :is-required="false"
+                :initial-value="register.age"
 				@change-attribute="setRegisterAttribute('age', $event)"
 			/>
 
@@ -24,12 +29,24 @@
 				label="Data de Nascimento (opcional)"
 				id="birthday"
 				type="date"
-                :isRequired="false"
+                :is-required="false"
+                :initial-value="register.birthday"
 				@change-attribute="setRegisterAttribute('birthday', $event)"
 			/>
+
+            <div class="actions">
+                <a 
+                    @click="formStep++"
+                >
+                    Próximo
+                </a>
+            </div>
         </div>
 
-        <div class="step-form 2">
+        <div 
+            class="step-form 2"
+            v-if="formStep === 1"
+        >
             <h3>2/3:</h3>
 
 			<div class="pet-radio-group">
@@ -117,9 +134,25 @@
                 </select>
             </div>
 
+            <div class="actions">
+                <a 
+                    @click="formStep--"
+                >
+                    Voltar
+                </a>
+
+                <a 
+                    @click="formStep++"
+                >
+                    Próximo
+                </a>
+            </div>
         </div>
 
-        <div class="step-form 3">
+        <div
+            class="step-form 3"
+            v-if="formStep === 2"
+        >
             <h3>3/3:</h3>
             <PetInputImage 
                 image-type="pet"
@@ -127,12 +160,21 @@
                 @image-selected="setRegisterAttribute('inputFile', $event)"
             />
 
+            <div class="actions">
+                <a 
+                    @click="formStep--"
+                >
+                    Voltar
+                </a>
+            </div>
+
 			<PetButton 
 				class="secondary"
 				type="submit" 
 				label="Cadastrar"
 			/>
         </div>
+
         <PetLink to="/profile">
             Cancelar
 		</PetLink>
@@ -158,6 +200,7 @@ export default {
     
 	data() {
         return {
+            formStep: 0,
             register: {
                 name: '',
                 age: '',
@@ -390,6 +433,12 @@ export default {
         breedList() {
             const type = this.types.find(type => type.value === this.register.type)
             return type.breed
+        }
+    },
+
+    watch: {
+        'register.type': function () {
+            this.register.breed = 'SRD (Sem Raça Definida ou Vira-Lata)'
         }
     },
 
