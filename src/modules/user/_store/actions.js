@@ -10,7 +10,7 @@ export const createUser = async ({ dispatch }, payload) => {
         const response = await userService.registerUser(payload)
         if(response.status === 200) {
             if (payload.saveImage) {
-                await dispatch('uploadImage', payload.saveImage, { root: true })
+                await dispatch('uploadUserImage', payload.saveImage, { root: true })
             }
             dispatch('auth/logIn', { ...payload.user }, { root: true })
         }

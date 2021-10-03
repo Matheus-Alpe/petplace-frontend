@@ -123,7 +123,7 @@ export default {
             'updateUser',
         ]),
         ...mapActions([
-            'uploadImage'
+            'uploadUserImage'
         ]),
 
         setRegisterAttribute(attribute, value) {
@@ -141,7 +141,7 @@ export default {
 
         async submitChanges() {
             if (this.inputFile) {
-                await this.uploadImage(this.inputFile)
+                await this.uploadUserImage(this.inputFile)
                 this.dataUser.image = this.inputFile.name
             }
             this.updateUser({ user: this.dataUser })

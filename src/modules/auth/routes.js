@@ -14,7 +14,7 @@ export default [
             {
                 path: 'register',
                 alias: ['cadastrar', 'criar'],
-                name: 'Login',
+                name: 'Register',
                 component: () => import(/* webpackChunkName: "register" */ './_pages/Register.vue'),
             },
         ]
