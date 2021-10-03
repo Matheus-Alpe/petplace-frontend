@@ -25,7 +25,12 @@ export default {
             default: true
         },
 
-        imgUrl: String
+        imgUrl: String,
+
+        imageType: {
+            type: String,
+            default: 'user'
+        }
     },
 
     data() {
@@ -36,9 +41,11 @@ export default {
 
     computed: {
         imageUrl() {
-            const image =
-                (this.imgInput && URL.createObjectURL(this.imgInput)) || this.imgUrl ||
-                require('@/assets/icons/default-profile.svg');
+            const defaultImage = this.imageType === 'user' ? 'default-profile' : 'default-profile-pet'
+            const image = (this.imgInput && URL.createObjectURL(this.imgInput)) 
+                || this.imgUrl 
+                || require(`@/assets/icons/${defaultImage}.svg`);
+
             return {
                 backgroundImage: `url(${image})`,
             };
