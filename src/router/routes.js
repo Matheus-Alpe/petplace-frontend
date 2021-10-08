@@ -10,8 +10,8 @@ export default [
     ...pet,
 
     // fallback for invalid endpoints
-    {
-        path: '*',
-        redirect: '/auth/login'
-    }
+    // {
+    //     path: '*',
+    //     redirect: '/auth/login'
+    // }
 ]

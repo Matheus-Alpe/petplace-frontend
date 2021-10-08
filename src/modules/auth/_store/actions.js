@@ -8,15 +8,17 @@ export const logIn = async ({ dispatch }, payload) => {
     if (data.status && data.status > 400) {
         return data
     }
-    dispatch('user/setUser', data.user, { root: true })
+
     dispatch('setToken', data.token)
+    dispatch('loadSession')
 }
 
 export const logOut = ({ dispatch }) => {
+    dispatch('setToken', '')
     storage.setHeaderToken('')
     storage.deleteLocalToken()
-    dispatch('setToken', '')
     dispatch('user/setUser', {}, { root: true })
+    dispatch('pet/setPets', [], { root: true })
 }
 
 export const setToken = ({ commit }, payload) => {
@@ -44,8 +46,9 @@ export const loadSession = ({ dispatch }) => {
     // eslint-disable-next-line no-async-promise-executor
     return new Promise(async (resolve, reject) => {
         try {
-            const { data: { user } } = await authService.loadSession()
+            const { data: { user, pets } } = await authService.loadSession()
             dispatch('user/setUser', user, { root: true })
+            dispatch('pet/setPets', pets, { root: true })
             resolve()
         } catch (error) {
             dispatch('logOut')

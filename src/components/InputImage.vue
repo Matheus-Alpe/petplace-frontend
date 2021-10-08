@@ -55,7 +55,7 @@ export default {
     methods: {
         previewFiles(event) {
             const [ file ] = event.target.files
-            const providerImage = 'http://localhost:5000/static/users/'
+            const providerImage = `http://localhost:5000/static/${this.imageType === 'user' ? 'users': 'pets'}/`
             
             Object.defineProperty(file, 'name', {
                 writable: true,

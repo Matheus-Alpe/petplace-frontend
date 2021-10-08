@@ -73,6 +73,16 @@
 
             <div class="owner__pets-container">
                 <PetLink
+                    v-for="(pet, i) in pets"
+                    :key="i"
+                    to="/pet/register"
+                    class="owner__pet-card"
+                >
+                    <img 
+                        :src="pet.avatar_url" 
+                        :alt="`pet ${pet.name}`">
+                </PetLink>
+                <PetLink
                     to="/pet/register"
                     class="owner__pet-card register"
                 >
@@ -110,6 +120,8 @@ export default {
     }),
     computed: {
         ...mapState('user', ['user']),
+
+        ...mapState('pet', ['pets']),
 
         imageUrl() {
             return this.inputFile && URL.createObjectURL(this.inputFile)
@@ -219,11 +231,22 @@ export default {
         display: flex;
         justify-content: center;
         align-items: center;
-        background: red;
         transition: 0.3s;
-        opacity: 0.5;
         border-radius: 10px;
         overflow: hidden;
+        background: black;
+
+        &:not(.register) img {
+            max-width: 100%;
+            height: 100%;
+            object-fit: cover;
+            // object-fit: scale-down;
+        }
+
+        &.register {
+            background: pink;
+            opacity: 0.5;
+        }
     }
 }
 

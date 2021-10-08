@@ -21,7 +21,7 @@ export default {
 }
 
 .container > div {
-    height: 100%;
+    height: calc(100% - 34px);
 
     > form {
         width: 90%;

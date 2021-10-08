@@ -1,190 +1,163 @@
 <template>
-    <div class="container">
-        <h1>Cadastro de Pet</h1>
-        <form class="register">
+    <div class="container-register">
+
+        <div class="title-register">
+            <h1>Cadastro de Pet</h1>
+        </div>
+        
+        <form 
+            class="register"
+            @submit.prevent="registerIn"    
+        >
 
             <div 
-                class="step-form 1"
-                v-if="formStep === 0"
+                class="step-form _1"
             >
-                <h3>1/3:</h3>
                 
-                <PetInput 
-                    label="Nome do Pet"
-                    id="name"
-                    type="text"
-                    :initial-value="register.name"
-                    @change-attribute="setRegisterAttribute('name', $event)"
-                />
+                <div class="form-group">
+                    <PetInputImage 
+                        image-type="pet"
+                        class="center"
+                        @image-selected="setRegisterAttribute('inputFile', $event)"
+                    />
 
-                <PetInput 
-                    label="Idade (opcional)"
-                    id="age"
-                    type="number"
-                    :is-required="false"
-                    :initial-value="register.age"
-                    @change-attribute="setRegisterAttribute('age', $event)"
-                />
+                    <PetInput 
+                        label="Nome"
+                        id="name"
+                        type="text"
+                        :initial-value="register.name"
+                        @change-attribute="setRegisterAttribute('name', $event)"
+                    />
 
-                <PetInput 
-                    label="Data de Nascimento (opcional)"
-                    id="birthday"
-                    type="date"
-                    :is-required="false"
-                    :initial-value="register.birthday"
-                    @change-attribute="setRegisterAttribute('birthday', $event)"
-                />
+                    <PetInput 
+                        label="Idade (opcional)"
+                        id="age"
+                        type="number"
+                        :is-required="false"
+                        :initial-value="register.age"
+                        @change-attribute="setRegisterAttribute('age', $event)"
+                    />
 
-                <div class="actions">
-                    <span 
-                        @click="formStep++"
-                    >
-                        Próximo
-                    </span>
+                    <PetInput 
+                        label="Data de Nascimento (opcional)"
+                        id="birthday"
+                        type="date"
+                        :is-required="false"
+                        :initial-value="register.birthday"
+                        @change-attribute="setRegisterAttribute('birthday', $event)"
+                    />
+
+                    
+                    <div class="pet-radio-group">
+                        <label>Sexo:</label>
+
+                        <span class="pet-check">
+                            <input
+                                type="radio"
+                                class="pet-check-input"
+                                value="M"
+                                id="masculino"
+                                v-model="register.sex"
+                                required
+                            />
+                            <label 
+                                class="pet-check-label" 
+                                for="masculino"
+                            >
+                                Masculino
+                            </label>
+                        </span>
+
+                        <span class="pet-check">
+                            <input
+                                type="radio"
+                                class="pet-check-input"
+                                value="F"
+                                id="feminino"
+                                v-model="register.sex"
+                            />
+                            <label 
+                                class="pet-check-label" 
+                                for="feminino"
+                            >
+                                Feminino
+                            </label>
+                        </span>
+                    </div>
+
+                    <div class="pet-select-group">
+                        <label>Tipo:</label>
+                        <select
+                            class="pet-control"
+                            v-model="register.type"
+                        >
+                            <option 
+                                v-for="(type, index) in types"
+                                :key="index"
+                                :value="type.value"
+                            >
+                                {{ type.value }}
+                            </option>
+                        </select>
+                    </div>
+
+                    <div class="pet-select-group">
+                        <label>Raça:</label>
+                        <select
+                            class="pet-control"
+                            v-model="register.breed"
+                        >
+                            <option 
+                                v-for="(breed, index) in breedList"
+                                :key="index"
+                                :value="breed"
+                            >
+                                {{ breed }}
+                            </option>
+                        </select>
+                    </div>
+
+                    <div class="pet-select-group">
+                        <label>Porte:</label>
+                        <select
+                            class="pet-control"
+                            v-model="register.size"
+                        >
+                            <option 
+                                v-for="(size, index) in sizes"
+                                :key="index"
+                                :value="size"
+                            >
+                                {{ size }}
+                            </option>
+                        </select>
+                    </div>
+
+                    <PetButton
+                        class="secondary"
+                        type="submit" 
+                        label="Cadastrar"
+                    />
+                    
                 </div>
+
+               
             </div>
 
-            <div 
-                class="step-form 2"
-                v-if="formStep === 1"
-            >
-                <h3>2/3:</h3>
 
-                <div class="pet-radio-group">
-                    <label>Sexo:</label>
-
-                    <span class="pet-check">
-                        <input
-                            type="radio"
-                            class="pet-check-input"
-                            value="M"
-                            id="masculino"
-                            v-model="register.sex"
-                            required
-                        />
-                        <label 
-                            class="pet-check-label" 
-                            for="masculino"
-                        >
-                            Masculino
-                        </label>
-                    </span>
-
-                    <span class="pet-check">
-                        <input
-                            type="radio"
-                            class="pet-check-input"
-                            value="F"
-                            id="feminino"
-                            v-model="register.sex"
-                        />
-                        <label 
-                            class="pet-check-label" 
-                            for="feminino"
-                        >
-                            Feminino
-                        </label>
-                    </span>
-                </div>
-
-                <div class="pet-select-group">
-                    <label>Tipo:</label>
-                    <select
-                        class="pet-control"
-                        v-model="register.type"
-                    >
-                        <option 
-                            v-for="(type, index) in types"
-                            :key="index"
-                            :value="type.value"
-                        >
-                            {{ type.value }}
-                        </option>
-                    </select>
-                </div>
-
-                <div class="pet-select-group">
-                    <label>Raça:</label>
-                    <select
-                        class="pet-control"
-                        v-model="register.breed"
-                    >
-                        <option 
-                            v-for="(breed, index) in breedList"
-                            :key="index"
-                            :value="breed"
-                        >
-                            {{ breed }}
-                        </option>
-                    </select>
-                </div>
-
-                <div class="pet-select-group">
-                    <label>Porte:</label>
-                    <select
-                        class="pet-control"
-                        v-model="register.size"
-                    >
-                        <option 
-                            v-for="(size, index) in sizes"
-                            :key="index"
-                            :value="size"
-                        >
-                            {{ size }}
-                        </option>
-                    </select>
-                </div>
-
-                <div class="actions">
-                    <span 
-                        @click="formStep--"
-                    >
-                        Voltar
-                    </span>
-
-                    <span
-                        @click="formStep++"
-                    >
-                        Próximo
-                    </span>
-                </div>
-            </div>
-
-            <div
-                class="step-form 3"
-                v-if="formStep === 2"
-            >
-                <h3>3/3:</h3>
-                <PetInputImage 
-                    image-type="pet"
-                    class="center"
-                    @image-selected="setRegisterAttribute('inputFile', $event)"
-                />
-
-                <div class="actions">
-                    <span 
-                        @click="formStep--"
-                    >
-                        Voltar
-                    </span>
-                </div>
-
-                <PetButton 
-                    class="secondary"
-                    type="submit" 
-                    label="Cadastrar"
-                />
-            </div>
-
-            <PetLink to="/profile">
-                Cancelar
-            </PetLink>
         </form>
+
+        <PetLink
+            @click="resetRegister"
+            to="/profile"
+        >
+            Cancelar
+        </PetLink>
     </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 
 import PetInputImage from '@/components/InputImage.vue'
 import PetInput from '@/components/Input.vue'
@@ -202,15 +175,14 @@ export default {
     
 	data() {
         return {
-            formStep: 0,
             register: {
                 name: '',
                 age: '',
                 sex: 'M',
                 type: 'cachorro',
-                breed: 'SRD (Sem Raça Definida ou Vira-Lata)',
+                breed: 'SRD (Sem Raça Definida)',
                 size: 'Médio',
-                avatar_url: 'http://localhost:5000/static/users/default-profile-pet.svg',
+                avatar_url: 'http://localhost:5000/static/pets/default-profile-pet.svg',
                 birthday: '',
                 user_id: '',
                 adoptable: false,
@@ -340,7 +312,7 @@ export default {
                         "Saluki",
                         "Samoieda",
                         "São Bernardo",
-                        "SRD (Sem Raça Definida ou Vira-Lata)",
+                        "SRD (Sem Raça Definida)",
                         "Scottish Terrier",
                         "Setter Irlandés",
                         "Shar-Pei",
@@ -415,7 +387,7 @@ export default {
                         "Savannah",
                         "Scottish Fold",
                         "Selkirk Rex",
-                        "SRD (Sem Raça Definida ou Vira-Lata)",
+                        "SRD (Sem Raça Definida)",
                         "Siamês",
                         "Siberiano",
                         "Singapura",
@@ -435,17 +407,18 @@ export default {
         breedList() {
             const type = this.types.find(type => type.value === this.register.type)
             return type.breed
-        }
+        },
     },
 
     watch: {
         'register.type': function () {
-            this.register.breed = 'SRD (Sem Raça Definida ou Vira-Lata)'
+            this.register.breed = 'SRD (Sem Raça Definida)'
         }
     },
 
     methods: {
         ...mapGetters('user', ['getUserId']),
+        ...mapActions('pet', ['createPet']),
 
 		setRegisterAttribute(attribute, value) {
 			if (attribute === 'inputFile') {
@@ -459,14 +432,33 @@ export default {
 
         async registerIn() {
             try {
-                await this.createUser({
-                    user: this.register,
+                await this.createPet({
+                    pet: this.register,
                     saveImage: this.inputFile,
                 });
+                this.$router.push('/profile');
             } catch (error) {
                 console.log(error)
             }
         },
+
+        resetRegister() {
+            this.register = {
+                name: '',
+                age: '',
+                sex: 'M',
+                type: 'cachorro',
+                breed: 'SRD (Sem Raça Definida)',
+                size: 'Médio',
+                avatar_url: 'http://localhost:5000/static/pets/default-profile-pet.svg',
+                birthday: '',
+                user_id: '',
+                adoptable: false,
+                adopted: false,
+            }
+
+            this.inputFile = null
+        }
     },
 
     created() {
@@ -475,8 +467,84 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 select {
     text-transform: capitalize;
+    width: 50%;
+}
+
+.petplace-link {
+    text-align: left;
+    margin: 10px;
+}
+
+.container-register {
+    align-self: flex-start;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+}
+
+.actions {
+    display: flex;
+    justify-content: space-between;
+
+    .action {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+        font-size: 20px;
+        font-weight: bold;
+        background: yellow;
+
+        &.next {
+            &::before {
+                content: ">>";
+            }
+        }
+
+        &.prev {
+            &::before {
+                content: "<";
+            }
+        }
+
+        &.disabled {
+            opacity: .3;
+        }
+    }
+}
+
+.step-form {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    &._1 {
+        .actions {
+            justify-content: flex-end;
+        }
+    }
+}
+
+.petplace-input,
+.pet-radio-group,
+.pet-select-group {
+    margin: 20px 0;
+    
+    display: flex;
+    gap: 10px;
+}
+
+.pet-select-group {
+    label {
+        text-align: left;
+        display: inline-block;
+        width: 50px;
+    }
 }
 </style>
