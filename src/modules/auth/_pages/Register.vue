@@ -8,6 +8,7 @@
 
 			<PetInputImage 
 				class="center"
+				:img-url="register.avatar_url"
 				@image-selected="setRegisterAttribute('inputFile', $event)" 
 			/>
 
@@ -83,7 +84,7 @@ export default {
 			name: '',
 			cpf: '',
 			email: '',
-			image: 'http://localhost:5000/static/users/default-profile.svg',
+			avatar_url: '',
 			password: '',
 			confirmation: '',
 		},
@@ -122,7 +123,7 @@ export default {
             if (!this.isValid) return;
             try {
                 if (this.inputFile) {
-                    this.register.image = this.inputFile.name;
+                    this.register.avatar_url = this.inputFile.name;
                 }
                 const response = await this.createUser({
                     user: this.register,

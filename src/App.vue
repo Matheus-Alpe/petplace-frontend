@@ -22,11 +22,21 @@ export default {
     },
 
     watch: {
-        hasToken(has) {
+        hasToken: function (has) {
             if(!has) return this.$router.push('/auth/login')
             this.$router.push('/profile')
         }
-    }
+    },
+
+     directives: {
+        formatdate: {
+            inserted(el) {
+                if (!el || !el.innerText) return
+                const [ date ] = String(el.innerText).split('T')
+                el.innerText = date.split('-').reverse().join('/')
+            }
+        }
+    },
 }
 </script>
 

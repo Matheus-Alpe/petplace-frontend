@@ -9,6 +9,11 @@ export default [
                 path: 'register',
                 name: 'Pet Register',
                 component: () => import(/* webpackChunkName: "pet-register" */ './_pages/PetRegister.vue'),
+            },
+            {
+                path: 'profile',
+                name: 'Pet Profile',
+                component: () => import(/* webpackChunkName: "pet-profile" */ './_pages/PetProfile.vue'),
             }
         ]
     },

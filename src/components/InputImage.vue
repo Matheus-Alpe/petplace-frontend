@@ -25,7 +25,12 @@ export default {
             default: true
         },
 
-        imgUrl: String
+        imgUrl: String,
+
+        imageType: {
+            type: String,
+            default: 'user'
+        }
     },
 
     data() {
@@ -36,9 +41,10 @@ export default {
 
     computed: {
         imageUrl() {
-            const image =
-                (this.imgInput && URL.createObjectURL(this.imgInput)) || this.imgUrl ||
-                require('@/assets/icons/default-profile.svg');
+            const image = (this.imgInput && URL.createObjectURL(this.imgInput)) 
+                || this.imgUrl 
+                || require(`@/assets/icons/${this.selectDefaultImage()}.svg`);
+
             return {
                 backgroundImage: `url(${image})`,
             };
@@ -46,9 +52,13 @@ export default {
     },
 
     methods: {
+        selectDefaultImage() {
+            return this.imageType === 'user' ? 'default-profile' : 'default-profile-pet'
+        },
+
         previewFiles(event) {
             const [ file ] = event.target.files
-            const providerImage = 'http://localhost:5000/static/users/'
+            const providerImage = `http://localhost:5000/static/${this.imageType === 'user' ? 'users': 'pets'}/`
             
             Object.defineProperty(file, 'name', {
                 writable: true,
@@ -85,9 +95,22 @@ export default {
 
     &-image-selector {
         position: absolute;
-        bottom: 10px;
-        right: 15px;
-        color: white;
+        inset: 0;
+        border-radius: 50%;
+        color: black;
+
+        label {
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+            
+            span {
+                position: absolute;
+                left: -3px;
+                bottom: 0;
+            }
+        }
+
 
         input[type="file"] {
             display: none;

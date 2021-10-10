@@ -72,6 +72,18 @@
             </div>
 
             <div class="owner__pets-container">
+                <button
+                    v-for="(pet, i) in pets"
+                    :key="i"
+                    type="button"
+                    class="owner__pet-card"
+                    @click="openPetProfile(pet)"
+                >
+                    <img 
+                        :src="pet.avatar_url" 
+                        :alt="`pet ${pet.name}`">
+                </button>
+
                 <PetLink
                     to="/pet/register"
                     class="owner__pet-card register"
@@ -82,14 +94,19 @@
         </div>
 
         <!-- The overlay -->
-        <Overlay :user="dataUser" />
+        <PetOverlay 
+            :data="dataUser"
+            :callback="deleteUser"
+            :should-show="shouldShowOverlay"
+            @close-overlay="shouldShowOverlay = false"
+        />
     </div>
 </template>
 
 <script>
 import { mapState, mapActions } from 'vuex'
 
-import Overlay from "@/components/Overlay.vue";
+import PetOverlay from "@/components/Overlay.vue";
 import PetInputImage from '@/components/InputImage.vue'
 import PetInput from '@/components/Input.vue'
 import PetLink from '@/components/Link.vue'
@@ -98,7 +115,7 @@ import PetLink from '@/components/Link.vue'
 export default {
     name: "Profile",
     components: {
-        Overlay,
+        PetOverlay,
         PetInputImage,
         PetInput,
         PetLink
@@ -106,10 +123,13 @@ export default {
     data: () => ({
         dataUser: null,
         displayForm: false,
-        inputFile: null
+        inputFile: null,
+        shouldShowOverlay: false
     }),
     computed: {
         ...mapState('user', ['user']),
+
+        ...mapState('pet', ['pets']),
 
         imageUrl() {
             return this.inputFile && URL.createObjectURL(this.inputFile)
@@ -121,9 +141,13 @@ export default {
         ]),
         ...mapActions('user', [
             'updateUser',
+            'deleteUser'
         ]),
         ...mapActions([
             'uploadUserImage'
+        ]),
+        ...mapActions('pet', [
+            'setSelectedPet'
         ]),
 
         setRegisterAttribute(attribute, value) {
@@ -139,10 +163,15 @@ export default {
             this.logOut()
         },
 
+        openPetProfile(pet) {
+            this.setSelectedPet(pet)
+            this.$router.push('/pet/profile')
+        },
+
         async submitChanges() {
             if (this.inputFile) {
                 await this.uploadUserImage(this.inputFile)
-                this.dataUser.image = this.inputFile.name
+                this.dataUser.avatar_url = this.inputFile.name
             }
             this.updateUser({ user: this.dataUser })
         },
@@ -168,22 +197,23 @@ export default {
 
         openOverlay() {
             this.closeDropdown();
-            document.getElementById("excludeOverlay").style.display = 'block'
+            this.shouldShowOverlay = true;
         },
 
         showForm(type) {
             this.displayForm = !this.displayForm
             this.closeDropdown()
+
             if(type === 'close') {
                 this.inputFile = null
             }
         }
 
     },
-    mounted() {
-        this.dataUser = {
-            ...this.user
-        };
+
+    beforeMount() {
+        this.dataUser = Object.assign({}, this.user)
+        this.setSelectedPet({})
     }
 };
 </script>
@@ -212,18 +242,30 @@ export default {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 10px;
+    margin: 10px;
     padding-bottom: 44px;
     
     .owner__pet-card {
+        all: unset;
         aspect-ratio: 1;
         display: flex;
         justify-content: center;
         align-items: center;
-        background: red;
         transition: 0.3s;
-        opacity: 0.5;
         border-radius: 10px;
         overflow: hidden;
+        background: black;
+
+        &:not(.register) img {
+            max-width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        &.register {
+            background: transparent;
+            opacity: 0.5;
+        }
     }
 }
 

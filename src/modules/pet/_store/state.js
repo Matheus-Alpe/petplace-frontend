@@ -1,4 +1,4 @@
 export default {
-    pet: {},
-    pets: []
+    pets: [],
+    selectedPet: {}
 }

@@ -10,14 +10,14 @@
         <input
             :class="{ error: !!error || noMatch }"
             @input="(error || isLoginPage) && $emit('remove-error', isLoginPage ? 'login' : id)"
-            @keyup="id === 'confirmation' && $emit('change-attribute', value)"
+            @keyup="$emit('change-attribute', value)"
             :type="type"
             :id="id"
             :value="initialValue"
             v-model="value"
             @blur="$emit('change-attribute', value)"
             :autocomplete="autocomplete"
-            required
+            :required="isRequired"
         />
     </label>
 </template>
@@ -39,6 +39,11 @@ export default {
         isLoginPage: Boolean,
 
         initialValue: [String, Number],
+
+        isRequired: {
+            type: Boolean,
+            default: true
+        },
 
         autocomplete: {
             type: Boolean,
