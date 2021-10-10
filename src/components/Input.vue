@@ -10,7 +10,7 @@
         <input
             :class="{ error: !!error || noMatch }"
             @input="(error || isLoginPage) && $emit('remove-error', isLoginPage ? 'login' : id)"
-            @keyup="id === 'confirmation' && $emit('change-attribute', value)"
+            @keyup="$emit('change-attribute', value)"
             :type="type"
             :id="id"
             :value="initialValue"

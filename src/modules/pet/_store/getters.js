@@ -1,0 +1,1 @@
+export const hasSelectedPet = ({ selectedPet }) => !!(selectedPet && selectedPet.id)

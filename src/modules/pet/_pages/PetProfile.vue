@@ -7,7 +7,7 @@
             <div class="pet-actions">
                 <span
                     class="material-icons edit"
-
+                    @click="$router.push('/pet/register')"
                 >
                     mode_edit
                 </span>
@@ -111,7 +111,6 @@ export default {
 
     methods: {
         ...mapActions('pet', [
-            'setSelectedPet',
             'deletePet'
         ]),
 

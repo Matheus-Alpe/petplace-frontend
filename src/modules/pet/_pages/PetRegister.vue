@@ -7,7 +7,7 @@
         
         <form 
             class="register"
-            @submit.prevent="registerIn"    
+            @submit.prevent="actionController"    
         >
 
             <div 
@@ -18,6 +18,7 @@
                     <PetInputImage 
                         image-type="pet"
                         class="center"
+                        :img-url="register.avatar_url"
                         @image-selected="setRegisterAttribute('inputFile', $event)"
                     />
 
@@ -90,6 +91,7 @@
                         <select
                             class="pet-control"
                             v-model="register.type"
+                            @change="handleChange"
                         >
                             <option 
                                 v-for="(type, index) in types"
@@ -157,7 +159,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex'
+import { mapActions, mapGetters, mapState } from 'vuex'
 
 import PetInputImage from '@/components/InputImage.vue'
 import PetInput from '@/components/Input.vue'
@@ -182,7 +184,7 @@ export default {
                 type: 'cachorro',
                 breed: 'SRD (Sem Raça Definida)',
                 size: 'Médio',
-                avatar_url: 'http://localhost:5000/static/pets/default-profile-pet.svg',
+                avatar_url: '',
                 birthday: '',
                 user_id: '',
                 adoptable: false,
@@ -408,21 +410,35 @@ export default {
     },
 
     computed: {
+        ...mapState('pet', [
+            'selectedPet'
+        ]),
+        ...mapGetters('pet', [
+            'hasSelectedPet'
+        ]),
+
         breedList() {
             const type = this.types.find(type => type.value === this.register.type)
             return type.breed.sort()
         },
     },
 
-    watch: {
-        'register.type': function () {
-            this.register.breed = 'SRD (Sem Raça Definida)'
-        }
-    },
-
     methods: {
-        ...mapGetters('user', ['getUserId']),
-        ...mapActions('pet', ['createPet']),
+        ...mapGetters('user', [
+            'getUserId'
+        ]),
+        ...mapActions('pet', [
+            'createPet',
+            'updatePet',
+            'setSelectedPet',
+        ]),
+        ...mapActions([
+            'uploadPetImage'
+        ]),
+
+        handleChange() {
+            this.register.breed = 'SRD (Sem Raça Definida)'
+        },
 
 		setRegisterAttribute(attribute, value) {
 			if (attribute === 'inputFile') {
@@ -434,13 +450,37 @@ export default {
 			this.register[attribute] = value
 		},
 
+        actionController() {
+            this.hasSelectedPet ? this.submitChanges() : this.registerIn()
+        },
+
+        async uploadImg() {
+            if (this.inputFile) {
+                await this.uploadPetImage(this.inputFile)
+                this.register.avatar_url = this.inputFile.name
+            } 
+            
+            if (!this.register.avatar_url) {
+                this.register.avatar_url = 'http://localhost:5000/static/pets/default-profile-pet.svg'
+            }
+        },
+
         async registerIn() {
             try {
-                await this.createPet({
-                    pet: this.register,
-                    saveImage: this.inputFile,
-                });
-                this.$router.push('/profile');
+                await this.uploadImg()
+                await this.createPet({ pet: this.register })
+                this.$router.push('/profile')
+            } catch (error) {
+                console.log(error)
+            }
+        },
+
+        async submitChanges() {
+            try {
+                await this.uploadImg()
+                await this.updatePet({ pet: this.register })
+                this.setSelectedPet(this.register)
+                this.$router.push('/pet/profile')
             } catch (error) {
                 console.log(error)
             }
@@ -454,7 +494,7 @@ export default {
                 type: 'cachorro',
                 breed: 'SRD (Sem Raça Definida)',
                 size: 'Médio',
-                avatar_url: 'http://localhost:5000/static/pets/default-profile-pet.svg',
+                avatar_url: '',
                 birthday: '',
                 user_id: '',
                 adoptable: false,
@@ -466,7 +506,16 @@ export default {
     },
 
     created() {
-        this.register.user_id = this.getUserId()
+        if (this.hasSelectedPet) {
+            let birthday = this.selectedPet.birthday
+            if (birthday) {
+                birthday = birthday.split('T')[0]
+            }
+
+            this.register = Object.assign({}, this.selectedPet, { birthday })
+        } else {
+            this.register.user_id = this.getUserId()
+        }
     }
 }
 </script>

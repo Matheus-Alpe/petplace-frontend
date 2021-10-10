@@ -171,7 +171,7 @@ export default {
         async submitChanges() {
             if (this.inputFile) {
                 await this.uploadUserImage(this.inputFile)
-                this.dataUser.image = this.inputFile.name
+                this.dataUser.avatar_url = this.inputFile.name
             }
             this.updateUser({ user: this.dataUser })
         },
@@ -213,6 +213,7 @@ export default {
 
     beforeMount() {
         this.dataUser = Object.assign({}, this.user)
+        this.setSelectedPet({})
     }
 };
 </script>

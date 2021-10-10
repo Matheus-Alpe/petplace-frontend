@@ -8,6 +8,7 @@
 
 			<PetInputImage 
 				class="center"
+				:img-url="register.avatar_url"
 				@image-selected="setRegisterAttribute('inputFile', $event)" 
 			/>
 
@@ -83,7 +84,7 @@ export default {
 			name: '',
 			cpf: '',
 			email: '',
-			avatar_url: 'http://localhost:5000/static/users/default-profile.svg',
+			avatar_url: '',
 			password: '',
 			confirmation: '',
 		},
