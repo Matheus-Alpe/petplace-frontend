@@ -198,6 +198,8 @@ export default {
                 {
                     value: 'cachorro',
                     breed: [
+                        "Outro",
+                        "Não sei",
                         "Affenpinscher",
                         "Airedale Terrier",
                         "Akita Americano",
@@ -347,6 +349,8 @@ export default {
                 {
                     value: 'gato',
                     breed: [
+                        "Outro",
+                        "Não sei",
                         "Abissínio",
                         "Angorá",
                         "Ashera",
@@ -406,7 +410,7 @@ export default {
     computed: {
         breedList() {
             const type = this.types.find(type => type.value === this.register.type)
-            return type.breed
+            return type.breed.sort()
         },
     },
 
@@ -468,6 +472,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+label {
+    font-weight: bold;
+}
+
 select {
     text-transform: capitalize;
     width: 50%;
@@ -486,48 +494,11 @@ select {
 
 }
 
-.actions {
-    display: flex;
-    justify-content: space-between;
-
-    .action {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 35px;
-        height: 35px;
-        border-radius: 50%;
-        font-size: 20px;
-        font-weight: bold;
-        background: yellow;
-
-        &.next {
-            &::before {
-                content: ">>";
-            }
-        }
-
-        &.prev {
-            &::before {
-                content: "<";
-            }
-        }
-
-        &.disabled {
-            opacity: .3;
-        }
-    }
-}
-
 .step-form {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     width: 100%;
-
-    .actions {
-        justify-content: flex-end;
-    }
 }
 
 .petplace-input,
@@ -537,6 +508,12 @@ select {
     
     display: flex;
     gap: 10px;
+}
+
+.pet-radio-group {
+    .pet-check label {
+        font-weight: normal;
+    }
 }
 
 .pet-select-group {

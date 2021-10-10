@@ -9,10 +9,6 @@ export const setSelectedPet = ({ commit }, payload) => {
     commit(types.SELECT_PET, payload)
 }
 
-export const addToPets = ({ commit }, payload) => {
-    commit(types.ADD_TO_PETS, payload)
-}
-
 export const createPet = async ({ dispatch }, payload) => {
     try {
         const response = await petService.registerPet(payload)
@@ -20,7 +16,7 @@ export const createPet = async ({ dispatch }, payload) => {
             if (payload.saveImage) {
                 await dispatch('uploadPetImage', payload.saveImage, { root: true })
             }
-            await dispatch('addToPets', payload.pet)
+            await dispatch('auth/loadSession', {}, { root: true })
         }
     } catch (error) {
         console.log(error && error.response)
@@ -29,17 +25,16 @@ export const createPet = async ({ dispatch }, payload) => {
 
 export const updatePet = async ({ dispatch }, payload) => {
     try {
-        const { data: { pet } } = await petService.updatePet(payload)
-        dispatch('addToPets', pet)
+        await petService.updatePet(payload)
+        await dispatch('auth/loadSession', {}, { root: true })
     } catch (error) {
         console.log(error)
     }
 }
 
-export const deletePet = async ({ dispatch }, payload) => {
+export const deletePet = async (_, payload) => {
     try {
         await petService.deletePet({ pet: payload })
-        dispatch('auth/logOut', null, { root: true })
     } catch (error) {
         console.log(error)
     }

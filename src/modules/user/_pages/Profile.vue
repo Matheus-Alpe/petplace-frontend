@@ -72,16 +72,17 @@
             </div>
 
             <div class="owner__pets-container">
-                <PetLink
+                <button
                     v-for="(pet, i) in pets"
                     :key="i"
-                    to="/pet/profile"
+                    type="button"
                     class="owner__pet-card"
+                    @click="openPetProfile(pet)"
                 >
                     <img 
                         :src="pet.avatar_url" 
                         :alt="`pet ${pet.name}`">
-                </PetLink>
+                </button>
 
                 <PetLink
                     to="/pet/register"
@@ -93,14 +94,19 @@
         </div>
 
         <!-- The overlay -->
-        <Overlay :user="dataUser" />
+        <PetOverlay 
+            :data="dataUser"
+            :callback="deleteUser"
+            :should-show="shouldShowOverlay"
+            @close-overlay="shouldShowOverlay = false"
+        />
     </div>
 </template>
 
 <script>
 import { mapState, mapActions } from 'vuex'
 
-import Overlay from "@/components/Overlay.vue";
+import PetOverlay from "@/components/Overlay.vue";
 import PetInputImage from '@/components/InputImage.vue'
 import PetInput from '@/components/Input.vue'
 import PetLink from '@/components/Link.vue'
@@ -109,7 +115,7 @@ import PetLink from '@/components/Link.vue'
 export default {
     name: "Profile",
     components: {
-        Overlay,
+        PetOverlay,
         PetInputImage,
         PetInput,
         PetLink
@@ -117,7 +123,8 @@ export default {
     data: () => ({
         dataUser: null,
         displayForm: false,
-        inputFile: null
+        inputFile: null,
+        shouldShowOverlay: false
     }),
     computed: {
         ...mapState('user', ['user']),
@@ -134,9 +141,13 @@ export default {
         ]),
         ...mapActions('user', [
             'updateUser',
+            'deleteUser'
         ]),
         ...mapActions([
             'uploadUserImage'
+        ]),
+        ...mapActions('pet', [
+            'setSelectedPet'
         ]),
 
         setRegisterAttribute(attribute, value) {
@@ -150,6 +161,11 @@ export default {
 
         userLogOut() {
             this.logOut()
+        },
+
+        openPetProfile(pet) {
+            this.setSelectedPet(pet)
+            this.$router.push('/pet/profile')
         },
 
         async submitChanges() {
@@ -181,22 +197,22 @@ export default {
 
         openOverlay() {
             this.closeDropdown();
-            document.getElementById("excludeOverlay").style.display = 'block'
+            this.shouldShowOverlay = true;
         },
 
         showForm(type) {
             this.displayForm = !this.displayForm
             this.closeDropdown()
+
             if(type === 'close') {
                 this.inputFile = null
             }
         }
 
     },
-    mounted() {
-        this.dataUser = {
-            ...this.user
-        };
+
+    beforeMount() {
+        this.dataUser = Object.assign({}, this.user)
     }
 };
 </script>
@@ -229,6 +245,7 @@ export default {
     padding-bottom: 44px;
     
     .owner__pet-card {
+        all: unset;
         aspect-ratio: 1;
         display: flex;
         justify-content: center;
@@ -242,11 +259,10 @@ export default {
             max-width: 100%;
             height: 100%;
             object-fit: cover;
-            // object-fit: scale-down;
         }
 
         &.register {
-            background: pink;
+            background: transparent;
             opacity: 0.5;
         }
     }

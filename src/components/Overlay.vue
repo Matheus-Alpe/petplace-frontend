@@ -1,29 +1,41 @@
 <template>
-    <div id="excludeOverlay" class="overlay">
+    <div 
+        class="overlay"
+        :class="{ show: shouldShow }"
+        ref="excludeOverlay"
+    >
         <!-- Overlay content -->
         <div class="overlay-content">
-            <p>Deseja excluir a conta?</p>
+            <p>Deseja realmente excluir?</p>
             <a @click.prevent="closeOverlay" class="button-main">Cancelar</a>
-            <a @click.prevent="remove">Confirmar</a>
+            <a @click.prevent="confirmAction">Confirmar</a>
         </div>
     </div>
 </template>
 
 <script>
-import { mapActions } from 'vuex'
-
 export default {
-    name: "Overlay",
-    props: ['user'],
-    methods: {
-        ...mapActions('user', ['deleteUser']),
+    name: 'Overlay',
 
-        remove() {
-            this.deleteUser(this.user)
+    props: {
+        data: Object,
+        
+        callback: Function,
+
+        shouldShow: {
+            type: Boolean,
+            default: false
+        }
+    },
+
+    methods: {
+        closeOverlay() {
+            this.$emit('close-overlay')
         },
 
-        closeOverlay() {
-            document.getElementById("excludeOverlay").style.display = "none";
+        async confirmAction() {
+            await this.callback(this.data)
+            this.closeOverlay()
         },
     }
 };
@@ -31,17 +43,21 @@ export default {
 
 <style lang="scss" scoped>
 .overlay {
+    z-index: 10;
     display: none;
     height: 100%;
     width: 100%;
     position: fixed;
-    z-index: 1;
     left: 0;
     top: 0;
     background-color: rgb(0, 0, 0);
     background-color: rgba(0, 0, 0, 0.9);
     overflow-x: hidden;
     transition: 0.5s;
+
+    &.show {
+        display: block;
+    }
 }
 
 .overlay-content {
