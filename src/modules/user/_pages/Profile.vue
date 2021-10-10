@@ -75,13 +75,14 @@
                 <PetLink
                     v-for="(pet, i) in pets"
                     :key="i"
-                    to="/pet/register"
+                    to="/pet/profile"
                     class="owner__pet-card"
                 >
                     <img 
                         :src="pet.avatar_url" 
                         :alt="`pet ${pet.name}`">
                 </PetLink>
+
                 <PetLink
                     to="/pet/register"
                     class="owner__pet-card register"
@@ -224,6 +225,7 @@ export default {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 10px;
+    margin: 10px;
     padding-bottom: 44px;
     
     .owner__pet-card {

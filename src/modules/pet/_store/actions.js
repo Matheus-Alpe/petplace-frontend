@@ -5,6 +5,10 @@ export const setPets = ({ commit }, payload) => {
     commit(types.SET_PETS, payload)
 }
 
+export const setSelectedPet = ({ commit }, payload) => {
+    commit(types.SELECT_PET, payload)
+}
+
 export const addToPets = ({ commit }, payload) => {
     commit(types.ADD_TO_PETS, payload)
 }

@@ -8,4 +8,8 @@ export default {
     [types.ADD_TO_PETS] (state, payload) {
         state.pets.push(payload);
     },
+
+    [types.SELECT_PET] (state, payload) {
+        state.selectedPet = payload;
+    }
 }

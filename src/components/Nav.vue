@@ -30,7 +30,7 @@ export default {
     right: 0;
     left: 0;
     bottom: 0;
-    background: red;
+    background: rgb(99, 99, 212);
     display: flex;
     justify-content: space-around;
     align-items: center;

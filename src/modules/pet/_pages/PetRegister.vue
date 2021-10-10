@@ -523,11 +523,10 @@ select {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    width: 100%;
 
-    &._1 {
-        .actions {
-            justify-content: flex-end;
-        }
+    .actions {
+        justify-content: flex-end;
     }
 }
 
