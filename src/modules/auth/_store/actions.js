@@ -46,9 +46,11 @@ export const loadSession = ({ dispatch }) => {
     // eslint-disable-next-line no-async-promise-executor
     return new Promise(async (resolve, reject) => {
         try {
-            const { data: { user, pets } } = await authService.loadSession()
-            dispatch('user/setUser', user, { root: true })
-            dispatch('pet/setPets', pets, { root: true })
+            const { data } = await authService.loadSession()
+            console.log(data);
+            dispatch('user/setUser', data.user, { root: true })
+            dispatch('pet/setPets', data.pets, { root: true })
+            dispatch('vetHistory/setVetHistory', data.vetHistory, { root: true })
             resolve()
         } catch (error) {
             dispatch('logOut')

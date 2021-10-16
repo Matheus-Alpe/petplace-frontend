@@ -1,0 +1,1 @@
+export const getVetHistory = ({ vetHistory }) => (petId) => vetHistory.filter(history => history.pet_id === petId)

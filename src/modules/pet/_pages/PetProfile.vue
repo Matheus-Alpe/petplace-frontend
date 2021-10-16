@@ -69,8 +69,22 @@
                     {{ petData.breed }}
                 </p>
                 
-
             </div>
+
+        </div>
+
+        <div class="pet-info-content">
+            <h2>Histórico Veterinário</h2>
+            <table>
+                <tr>
+                    <th>Descrição</th>
+                    <th>Data</th>
+                </tr>
+                <tr v-for="(history, index) in vetHistory" :key="index">
+                    <td>{{ history.description }}</td>
+                    <td v-formatdate>{{ history.date }}</td>
+                </tr>
+            </table>
         </div>
 
         <PetOverlay
@@ -83,7 +97,7 @@
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex'
+import { mapActions, mapState, mapGetters } from 'vuex'
 
 import PetOverlay from "@/components/Overlay.vue";
 import PetInputImage from '@/components/InputImage.vue'
@@ -99,6 +113,7 @@ export default {
     data() {
         return {
             petData: {},
+            vetHistory: [],
             shouldShowOverlay: false
         }
     },
@@ -116,6 +131,10 @@ export default {
 
         ...mapActions('auth', [
             'loadSession'
+        ]),
+
+        ...mapGetters('vetHistory', [
+            'getVetHistory'
         ]),
 
         async deleteCallback(pet) {
@@ -141,6 +160,7 @@ export default {
 
     beforeMount() {
         this.petData = Object.assign({}, this.selectedPet)
+        this.vetHistory = this.getVetHistory()(this.petData.id) || []
     
         if (!this.petData.id) this.$router.push('/profile')
     },
