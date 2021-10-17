@@ -99,9 +99,7 @@ export default {
         ]),
 
         closeOverlay() {
-            console.log('penis 3')
             this.resetForm()
-            console.log('penis 4')
             this.$emit('close-overlay')
         },
 
@@ -119,9 +117,7 @@ export default {
         },
 
         async deleteAction() {
-            console.log('penis 1')
             await this.deleteVetHistory(this.vethistory)
-            console.log('penis 2')
             this.closeOverlay()
         },
 
