@@ -76,13 +76,27 @@
         <div class="pet-info-content">
             <h2>Histórico Veterinário</h2>
             <table>
-                <tr>
+                <tr class="head">
                     <th>Descrição</th>
                     <th>Data</th>
                 </tr>
-                <tr v-for="(history, index) in vetHistory" :key="index">
-                    <td>{{ history.description }}</td>
-                    <td v-formatdate>{{ history.date }}</td>
+                <tr v-for="(history, index) in vetHistory" :key="index" class="data">
+                    <td class="description">{{ history.description }}</td>
+                    <td v-formatdate class="date">{{ history.date }}</td>
+                    <td class="edit">
+                        <span 
+                            @click="editVetHistory(history)"
+                            class="material-icons"
+                        >settings</span>
+                    </td>
+                </tr>
+                <tr class="action">
+                    <td colspan="2">
+                        <span 
+                            class="material-icons"
+                            @click="vetOverlay = true"    
+                        >add_circle</span>
+                    </td>
                 </tr>
             </table>
         </div>
@@ -93,6 +107,13 @@
             :should-show="shouldShowOverlay"
             @close-overlay="shouldShowOverlay = false"
         />
+
+        <PetOverlayForm
+            v-if="vetOverlay"
+            :data="petData"
+            :should-show="vetOverlay"
+            @close-overlay="closeCallback"
+        />
     </div>
 </template>
 
@@ -101,6 +122,7 @@ import { mapActions, mapState, mapGetters } from 'vuex'
 
 import PetOverlay from "@/components/Overlay.vue";
 import PetInputImage from '@/components/InputImage.vue'
+import PetOverlayForm from '@/modules/vethistory/_components/OverlayForm'
 
 export default {
     name: 'PetProfile',
@@ -108,13 +130,15 @@ export default {
     components: {
         PetOverlay,
         PetInputImage,
+        PetOverlayForm
     },
 
     data() {
         return {
             petData: {},
             vetHistory: [],
-            shouldShowOverlay: false
+            shouldShowOverlay: false,
+            vetOverlay: false
         }
     },
 
@@ -134,7 +158,11 @@ export default {
         ]),
 
         ...mapGetters('vetHistory', [
-            'getVetHistory'
+            'getVetHistory',
+        ]),
+
+        ...mapActions('vetHistory', [
+            'setSelectedVetHistory'
         ]),
 
         async deleteCallback(pet) {
@@ -145,6 +173,16 @@ export default {
             } catch (error) {
                 console.log(error)
             }
+        },
+
+        closeCallback() {
+            this.vetHistory = this.getVetHistory()(this.petData.id) || []
+            this.vetOverlay = false
+        },
+
+        editVetHistory(vetHistory) {
+            this.setSelectedVetHistory(vetHistory)
+            this.vetOverlay = true
         }
     },
 
@@ -208,6 +246,72 @@ export default {
             label {
                 font-weight: bold;
             }
+        }
+    }
+}
+
+.pet-info-content {
+    table {
+        box-sizing: border-box;
+        padding: 0 10px;
+        width: 100%;
+        
+        tr {
+            display: flex;
+            justify-content: space-between;
+            align-items: stretch;
+            gap: 5px;
+            margin: 20px 0;
+
+            &.head {
+                justify-content: space-evenly;
+            }
+
+            &.data {
+                border: 2px solid black;
+                border-radius: 5px;
+                padding: 0 5px;
+            }
+
+            &.action {
+                justify-content: center;
+                margin-bottom: 50px;
+            }
+            
+            td {
+                padding: 5px 0;
+
+                &:first-child {
+                    word-break: break-all;
+                }
+                
+                &.description {
+                    width: 55%;
+                }
+
+                &.date,
+                &.edit {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                }
+
+                &.date {
+                    border-left: 2px solid rgba(0, 0, 0, .1);
+                    width: 40%;
+                }
+
+                &.edit {
+                    width: 5%;
+                    padding: 0 10px;
+                    border-left: 2px solid rgba(0, 0, 0, .1);
+
+                    .material-icons {
+                        font-size: 13px;
+                    }
+                }
+            }
+            
         }
     }
 }

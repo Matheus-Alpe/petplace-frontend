@@ -57,6 +57,12 @@ export default {
         }
     },
 
+    watch: {
+        initialValue(newValue) {
+            if (newValue === '') this.value = ''
+        }
+    },
+
     created() {
         this.value = this.initialValue
     }

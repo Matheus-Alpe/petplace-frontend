@@ -138,7 +138,7 @@
                     <PetButton
                         class="secondary"
                         type="submit" 
-                        label="Cadastrar"
+                        :label="hasSelectedPet ? 'Salvar' : 'Cadastrar'"
                     />
                     
                 </div>
