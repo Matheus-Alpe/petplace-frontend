@@ -51,7 +51,7 @@ export const loadSession = ({ dispatch }) => {
             dispatch('user/setUser', data.user, { root: true })
             dispatch('pet/setPets', data.pets, { root: true })
             dispatch('vetHistory/setVetHistory', data.vetHistory, { root: true })
-            resolve()
+            resolve(data.user)
         } catch (error) {
             dispatch('logOut')
             reject(error)

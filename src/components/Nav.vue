@@ -27,10 +27,11 @@ export default {
 <style lang="scss" scoped>
 .petplace-nav {
     position: fixed;
+    z-index: 2;
     right: 0;
     left: 0;
     bottom: 0;
-    background: rgb(99, 99, 212);
+    background: rgb(95, 95, 168);
     display: flex;
     justify-content: space-around;
     align-items: center;

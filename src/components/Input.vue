@@ -60,6 +60,7 @@ export default {
     watch: {
         initialValue(newValue) {
             if (newValue === '') this.value = ''
+            this.value = this.initialValue
         }
     },
 

@@ -20,7 +20,7 @@
                 <PetInputImage 
                     class="center"
                     :show-input="displayForm"
-                    :img-url="dataUser && dataUser.image"
+                    :img-url="dataUser && dataUser.avatar_url"
                     @image-selected="setRegisterAttribute('inputFile', $event)" 
                 />
                 
@@ -39,6 +39,55 @@
                         :initialValue="dataUser.name"
                         @change-attribute="setRegisterAttribute('name', $event)"
                     />
+
+                    <PetInput 
+                        label="CEP"
+                        id="cep"
+                        type="text"
+                        style="--input-bg: rgb(99, 99, 212);"
+                        :initialValue="dataUser.cep"
+                        @change-attribute="setRegisterAttribute('cep', $event)"
+                    />
+
+                    <PetInput 
+                        label="Celular"
+                        id="cellphone"
+                        type="text"
+                        style="--input-bg: rgb(99, 99, 212);"
+                        :initialValue="dataUser.cellphone"
+                        @change-attribute="setRegisterAttribute('cellphone', $event)"
+                    />
+
+                    <PetInput 
+                        label="Telefone (opcional)"
+                        id="telephone"
+                        type="text"
+                        style="--input-bg: rgb(99, 99, 212);"
+                        :initialValue="dataUser.telephone"
+                        :is-required="false"
+                        @change-attribute="setRegisterAttribute('telephone', $event)"
+                    />
+
+                    <template>
+                        <PetInput 
+                            v-if="isInstitution"
+                            label="Data de Fundação"
+                            id="foundation"
+                            type="date"
+                            style="--input-bg: rgb(99, 99, 212);"
+                            :initialValue="dataUser.foundation"
+                            @change-attribute="setRegisterAttribute('foundation', $event)"
+                        />
+                        <PetInput 
+                            v-else
+                            label="Data de Nascimento"
+                            id="birthday"
+                            type="date"
+                            style="--input-bg: rgb(99, 99, 212);"
+                            :initialValue="dataUser.birthday"
+                            @change-attribute="setRegisterAttribute('birthday', $event)"
+                        />
+                    </template>
 
                     <PetInput 
                         label="Email"
@@ -104,7 +153,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
+import { mapState, mapActions, mapGetters } from 'vuex'
 
 import PetOverlay from "@/components/Overlay.vue";
 import PetInputImage from '@/components/InputImage.vue'
@@ -120,19 +169,38 @@ export default {
         PetInput,
         PetLink
     },
-    data: () => ({
-        dataUser: null,
-        displayForm: false,
-        inputFile: null,
-        shouldShowOverlay: false
-    }),
+    data() {
+        return {
+            dataUser: Object.assign({}, this.user),
+            displayForm: false,
+            inputFile: null,
+            shouldShowOverlay: false
+        }
+    },
     computed: {
         ...mapState('user', ['user']),
 
         ...mapState('pet', ['pets']),
 
+        ...mapGetters('user', ['isInstitution']),
+
         imageUrl() {
             return this.inputFile && URL.createObjectURL(this.inputFile)
+        }
+    },
+    watch: {
+        user: {
+            handler() {
+                this.dataUser = Object.assign({}, this.user)
+                if (this.dataUser.foundation) {
+                    this.dataUser.foundation = this.formatDate(this.dataUser.foundation)
+                }
+
+                if (this.dataUser.birthday) {
+                    this.dataUser.birthday = this.formatDate(this.dataUser.birthday)
+                }
+            },
+            deep: true
         }
     },
     methods: {
@@ -207,12 +275,24 @@ export default {
             if(type === 'close') {
                 this.inputFile = null
             }
-        }
+        },
 
+        formatDate(date) {
+            if(!date) return
+            return date.split('T')[0]
+        },
     },
 
-    beforeMount() {
+    async beforeMount() {
         this.dataUser = Object.assign({}, this.user)
+        if (this.dataUser.foundation) {
+            this.dataUser.foundation = this.formatDate(this.dataUser.foundation)
+        }
+
+        if (this.dataUser.birthday) {
+            this.dataUser.birthday = this.formatDate(this.dataUser.birthday)
+        }
+
         this.setSelectedPet({})
     }
 };
