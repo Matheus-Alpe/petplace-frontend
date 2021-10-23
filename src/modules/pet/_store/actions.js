@@ -23,7 +23,7 @@ export const updatePet = async ({ dispatch }, payload) => {
         await petService.updatePet(payload)
         await dispatch('auth/loadSession', {}, { root: true })
     } catch (error) {
-        console.log(error)
+        return error
     }
 }
 
@@ -31,6 +31,6 @@ export const deletePet = async (_, payload) => {
     try {
         await petService.deletePet({ pet: payload })
     } catch (error) {
-        console.log(error)
+        return error
     }
 }

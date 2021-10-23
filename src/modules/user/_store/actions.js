@@ -26,7 +26,7 @@ export const updateUser = async ({ dispatch }, payload) => {
         const { data: { user } } = await userService.updateUser(payload)
         dispatch('setUser', user)
     } catch (error) {
-        console.log(error)
+        return error
     }
 }
 
@@ -35,6 +35,6 @@ export const deleteUser = async ({ dispatch }, payload) => {
         await userService.deleteUser({ user: payload })
         dispatch('auth/logOut', null, { root: true })
     } catch (error) {
-        console.log(error)
+        return error
     }
 }

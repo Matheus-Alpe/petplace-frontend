@@ -6,7 +6,7 @@ export const uploadUserImage = async (_, payload) => {
         formData.append('pic', payload, payload.name)
         await globalService.uploadUserImage(formData);
     } catch (error) {
-        console.log(error);
+        return error;
     }
 }
 
@@ -16,6 +16,6 @@ export const uploadPetImage = async (_, payload) => {
         formData.append('pic', payload, payload.name)
         await globalService.uploadPetImage(formData);
     } catch (error) {
-        console.log(error);
+        return error;
     }
 }

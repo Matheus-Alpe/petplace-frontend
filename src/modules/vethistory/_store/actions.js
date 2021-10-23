@@ -23,7 +23,7 @@ export const updateVetHistory = async ({ dispatch }, payload) => {
         await vetHistoryService.updateVetHistory({ vetHistory: { ...payload, id: payload.vethistory_id }})
         await dispatch('auth/loadSession', {}, { root: true })
     } catch (error) {
-        console.log(error)
+        return error
     }
 }
 
@@ -32,6 +32,6 @@ export const deleteVetHistory = async ({ dispatch }, payload) => {
         await vetHistoryService.deleteVetHistory({ vetHistory: { ...payload, id: payload.vethistory_id }})
         await dispatch('auth/loadSession', {}, { root: true })
     } catch (error) {
-        console.log(error)
+        return error
     }
 }

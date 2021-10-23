@@ -471,7 +471,7 @@ export default {
                 await this.createPet({ pet: this.register })
                 this.$router.push('/profile')
             } catch (error) {
-                console.log(error)
+                return error
             }
         },
 
@@ -482,7 +482,7 @@ export default {
                 this.setSelectedPet(this.register)
                 this.$router.push('/pet/profile')
             } catch (error) {
-                console.log(error)
+                return error
             }
         },
 

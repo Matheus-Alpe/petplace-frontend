@@ -46,7 +46,7 @@
                 <p>
                     <label>Nasceu: </label>
                     <template v-if="petData.birthday">
-                        <span v-formatdate>{{ petData.birthday }}</span>
+                        <span>{{ formatDate(petData.birthday) }}</span>
                     </template>
                     <template v-else>
                         Indefinido
@@ -82,7 +82,7 @@
                 </tr>
                 <tr v-for="(history, index) in vetHistory" :key="index" class="data">
                     <td class="description">{{ history.description }}</td>
-                    <td v-formatdate class="date">{{ history.date }}</td>
+                    <td class="date">{{ formatDate(history.date) }}</td>
                     <td class="edit">
                         <span 
                             @click="editVetHistory(history)"
@@ -171,7 +171,7 @@ export default {
                 await this.loadSession()
                 this.$router.push('/profile')
             } catch (error) {
-                console.log(error)
+                return error
             }
         },
 
@@ -183,16 +183,10 @@ export default {
         editVetHistory(vetHistory) {
             this.setSelectedVetHistory(vetHistory)
             this.vetOverlay = true
-        }
-    },
+        },
 
-    directives: {
-        formatdate: {
-            inserted(el) {
-                if (!el || !el.innerText) return
-                const [ date ] = String(el.innerText).split('T')
-                el.innerText = date.split('-').reverse().join('/')
-            }
+        formatDate(date) {
+            return date.split('T')[0].split('-').reverse().join('/')
         }
     },
 

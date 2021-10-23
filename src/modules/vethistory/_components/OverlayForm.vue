@@ -147,7 +147,6 @@ export default {
 
         if(!this.hasSelectedVetHistory) return
         this.vethistory = this.normalizeVetData(this.selectedVetHistory)
-        console.log('hasSelectedVetHistory:', this.vethistory)
     }
 };
 </script>
