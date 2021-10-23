@@ -5,6 +5,42 @@
 		</PetLink>
 
 		<form @submit.prevent="registerIn">
+			<div class="pet-radio-group">
+				<label>Tipo de Usuário:</label>
+
+				<span class="pet-check">
+					<input
+						type="radio"
+						class="pet-check-input"
+						value="tutor"
+						id="tutor"
+						v-model="userType"
+						required
+					/>
+					<label 
+						class="pet-check-label" 
+						for="tutor"
+					>
+						Tutor
+					</label>
+				</span>
+
+				<span class="pet-check">
+					<input
+						type="radio"
+						class="pet-check-input"
+						value="institution"
+						id="institution"
+						v-model="userType"
+					/>
+					<label 
+						class="pet-check-label" 
+						for="institution"
+					>
+						Instituição
+					</label>
+				</span>
+			</div>
 
 			<PetInputImage 
 				class="center"
@@ -19,14 +55,65 @@
 				@change-attribute="setRegisterAttribute('name', $event)"
 			/>
 
+			<template>
+				<PetInput 
+					v-if="isInstitution"
+					label="CNPJ"
+					id="cnpj"
+					type="text"
+					@change-attribute="setRegisterAttribute('cnpj', $event)"
+					@remove-error="removeError"
+					:error="errors.cnpj"
+				/>
+				<PetInput 
+					v-else
+					label="CPF"
+					id="cpf"
+					type="text"
+					@change-attribute="setRegisterAttribute('cpf', $event)"
+					@remove-error="removeError"
+					:error="errors.cpf"
+				/>
+			</template>
+
 			<PetInput 
-				label="CPF"
-				id="cpf"
+				label="CEP"
+				id="cep"
 				type="text"
-				@change-attribute="setRegisterAttribute('cpf', $event)"
-				@remove-error="removeError"
-				:error="errors.cpf"
+				@change-attribute="setRegisterAttribute('cep', $event)"
 			/>
+
+			<PetInput 
+				label="Celular"
+				id="cellphone"
+				type="text"
+				@change-attribute="setRegisterAttribute('cellphone', $event)"
+			/>
+
+			<PetInput 
+				label="Telefone (opcional)"
+				id="telephone"
+				type="text"
+				:is-required="false"
+				@change-attribute="setRegisterAttribute('telephone', $event)"
+			/>
+
+			<template>
+				<PetInput 
+					v-if="isInstitution"
+					label="Data de Fundação"
+					id="foundation"
+					type="date"
+					@change-attribute="setRegisterAttribute('foundation', $event)"
+				/>
+				<PetInput 
+					v-else
+					label="Data de Nascimento"
+					id="birthday"
+					type="date"
+					@change-attribute="setRegisterAttribute('birthday', $event)"
+				/>
+			</template>
 
 			<PetInput 
 				label="Email"
@@ -79,24 +166,37 @@ export default {
 		PetLink
 	},
 
-	data: () => ({
-		register: {
-			name: '',
-			cpf: '',
-			email: '',
-			avatar_url: '',
-			password: '',
-			confirmation: '',
-		},
-		errors: {
-			email: '',
-			cpf: '',
-			confirmation: false,
-		},
-		inputFile: null,
-	}),
+	data() {
+		return {
+			userType: 'tutor',
+			register: {
+				name: '',
+				cpf: '',
+				cnpj: '',
+				cep: '',
+				email: '',
+				telephone: '',
+				cellphone: '',
+				birthday: '',
+				foundation: '',
+				avatar_url: '',
+				password: '',
+				confirmation: '',
+			},
+			errors: {
+				email: '',
+				cpf: '',
+				cnpj: '',
+				confirmation: false,
+			},
+			inputFile: null,
+		}
+	},
 
 	computed: {
+		isInstitution () {
+			return this.userType === 'institution'
+		},
         isValid() {
             return (
                 (this.register.password &&
