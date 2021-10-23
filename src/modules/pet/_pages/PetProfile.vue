@@ -230,7 +230,6 @@ export default {
                 const alteredData = { pet: { ...this.formatedPet, adoptable: !this.formatedPet.adoptable } }
                 await this.updatePet(alteredData)
                 this.petData = alteredData.pet
-                this.$router.push('/pet/profile')
             } catch (error) {
                 return error
             }
