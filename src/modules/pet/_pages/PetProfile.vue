@@ -4,6 +4,22 @@
         class="pet-profile"
     >
         <div class="pet-info-header">
+            <div class="pet-donation-actions" v-if="isInstitution">
+                <span
+                    v-if="!petData.adoptable"
+                    class="material-icons publish"
+                    @click="shouldShowPublishOverlay = !shouldShowPublishOverlay"
+                >
+                    public
+                </span>
+                <span
+                    v-else
+                    class="material-icons publish-off"
+                    @click="shouldShowPublishOverlay = !shouldShowPublishOverlay"
+                >
+                    public_off
+                </span>
+            </div>
             <div class="pet-actions">
                 <span
                     class="material-icons edit"
@@ -14,7 +30,7 @@
 
                 <span
                     class="material-icons delete"
-                    @click="shouldShowOverlay = true"
+                    @click="shouldShowDeleteOverlay = !shouldShowDeleteOverlay"
                 >
                     delete
                 </span>
@@ -102,10 +118,18 @@
         </div>
 
         <PetOverlay
+            :data="formatedPet"
+            :callback="publishAction"
+            :should-show="shouldShowPublishOverlay"
+            :message="petData.adoptable ? 'Deseja remover anuncio de doação?' : 'Desejar anunciar para doação?'"
+            @close-overlay="shouldShowPublishOverlay = false"
+        />
+
+        <PetOverlay
             :data="petData"
             :callback="deleteCallback"
-            :should-show="shouldShowOverlay"
-            @close-overlay="shouldShowOverlay = false"
+            :should-show="shouldShowDeleteOverlay"
+            @close-overlay="shouldShowDeleteOverlay = false"
         />
 
         <PetOverlayForm
@@ -137,20 +161,31 @@ export default {
         return {
             petData: {},
             vetHistory: [],
-            shouldShowOverlay: false,
+            shouldShowDeleteOverlay: false,
+            shouldShowPublishOverlay: false,
             vetOverlay: false
         }
     },
 
     computed: {
+        formatedPet() {
+            return {
+                ...this.petData,
+                birthday: this.petData.birthday && this.petData.birthday.split('T')[0]
+            }
+        },
         ...mapState('pet', [
             'selectedPet'
+        ]),
+        ...mapGetters('user', [
+            'isInstitution'
         ])
     },
 
     methods: {
         ...mapActions('pet', [
-            'deletePet'
+            'deletePet',
+            'updatePet',
         ]),
 
         ...mapActions('auth', [
@@ -187,7 +222,19 @@ export default {
 
         formatDate(date) {
             return date.split('T')[0].split('-').reverse().join('/')
-        }
+        },
+
+        async publishAction() {
+            try {
+                console.log('mensagem', this.formatedPet)
+                const alteredData = { pet: { ...this.formatedPet, adoptable: !this.formatedPet.adoptable } }
+                await this.updatePet(alteredData)
+                this.petData = alteredData.pet
+                this.$router.push('/pet/profile')
+            } catch (error) {
+                return error
+            }
+        },
     },
 
     beforeMount() {
@@ -203,6 +250,7 @@ export default {
 .pet-info-header {
     background: pink;
 
+    .pet-donation-actions,
     .pet-actions {
         z-index: 5;
         display: flex;
@@ -210,9 +258,8 @@ export default {
         gap: 5px;
         justify-content: center;
         position: absolute;
-        right: 0;
         top: 0;
-        
+
         .material-icons {
             display: flex;
             align-items: center;
@@ -229,8 +276,23 @@ export default {
             &.delete {
                 background: red;
             }
+
+            &.publish {
+                background: chartreuse;
+            }
+
+            &.publish-off {
+                background: grey;
+            }
         }
-        
+    }
+
+    .pet-donation-actions {
+        left: 0;
+    }
+
+    .pet-actions {
+        right: 0;
     }
 
     .pet-content {
@@ -255,7 +317,7 @@ export default {
             justify-content: space-between;
             align-items: stretch;
             gap: 5px;
-            margin: 20px 0;
+            margin: 15px 0;
 
             &.head {
                 justify-content: space-evenly;

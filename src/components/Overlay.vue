@@ -6,7 +6,7 @@
     >
         <!-- Overlay content -->
         <div class="overlay-content">
-            <p>Deseja realmente excluir?</p>
+            <p>{{ message }}</p>
             <a @click.prevent="closeOverlay" class="button-main">Cancelar</a>
             <a @click.prevent="confirmAction">Confirmar</a>
         </div>
@@ -21,6 +21,11 @@ export default {
         data: Object,
         
         callback: Function,
+
+        message: {
+            type: String,
+            default: 'Deseja realmente excluir?'
+        },
 
         shouldShow: {
             type: Boolean,
@@ -64,7 +69,7 @@ export default {
     position: relative;
     background-color: #fff;
     margin: 0 auto;
-    padding: 1.5em 0 1em;
+    padding: 1.5em 5px 1em;
     top: 25%;
     width: 90%;
     text-align: center;
