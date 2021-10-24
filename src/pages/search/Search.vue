@@ -56,6 +56,9 @@ export default {
 
 <style lang="scss" scoped>
 .search-content {
+    padding: 10px;
+    display: grid;
+    gap: 10px;
 
     .pet-card {
         all: unset;
@@ -63,16 +66,20 @@ export default {
         display: flex;
         align-items: center;
         gap: 10px;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;
         
         .thumbnail {
-            width: 50%;
-            aspect-ratio: 1;
+            width: 100%;
+            max-width: 50%;
+            height: 150px;
             display: grid;
             place-items: center;
             
             img {
                 max-width: 100%;
-                height: 88%;
+                height: 100%;
                 object-fit: cover;
             }
         }

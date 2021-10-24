@@ -201,7 +201,6 @@ export default {
                     value: 'cachorro',
                     breed: [
                         "Outro",
-                        "Não sei",
                         "Affenpinscher",
                         "Airedale Terrier",
                         "Akita Americano",
@@ -352,7 +351,6 @@ export default {
                     value: 'gato',
                     breed: [
                         "Outro",
-                        "Não sei",
                         "Abissínio",
                         "Angorá",
                         "Ashera",
