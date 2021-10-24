@@ -3,13 +3,13 @@
         <h1>Pesquisa</h1>
 
         <form @submit.prevent="search">
-            <input type="search" id="search" placeholder="pesquise">
+            <input type="search" id="search" placeholder="pesquise" v-model="term">
         </form>
 
         <div class="search-content">
 
             <button
-                v-for="(pet, i) in pets"
+                v-for="(pet, i) in filteredPets"
                 :key="i"
                 type="button"
                 class="pet-card"
@@ -39,7 +39,20 @@ export default {
 
     data() {
         return {
-            pets: []
+            pets: [],
+            term: ''
+        }
+    },
+
+    computed: {
+        filteredPets() {
+            return this.term 
+                ? this.pets.filter(pet => {
+                    if (Object.values(pet).find(value => {
+                        if (typeof value === 'string' && value.toLowerCase().includes(this.term)) return value;
+                    })) return pet
+                }) 
+                : this.pets;
         }
     },
 
