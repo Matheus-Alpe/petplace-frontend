@@ -20,7 +20,7 @@
                     public_off
                 </span>
             </div>
-            <div class="pet-actions">
+            <div class="pet-actions" v-if="isMyPet">
                 <span
                     class="material-icons edit"
                     @click="$router.push('/pet/register')"
@@ -99,14 +99,14 @@
                 <tr v-for="(history, index) in vetHistory" :key="index" class="data">
                     <td class="description">{{ history.description }}</td>
                     <td class="date">{{ formatDate(history.date) }}</td>
-                    <td class="edit">
+                    <td class="edit" v-if="isMyPet">
                         <span 
                             @click="editVetHistory(history)"
                             class="material-icons"
                         >settings</span>
                     </td>
                 </tr>
-                <tr class="action">
+                <tr class="action" v-if="isMyPet">
                     <td colspan="2">
                         <span 
                             class="material-icons"
@@ -144,6 +144,8 @@
 <script>
 import { mapActions, mapState, mapGetters } from 'vuex'
 
+import vetHistoryService from '@/services/vet-history-service'
+
 import PetOverlay from "@/components/Overlay.vue";
 import PetInputImage from '@/components/InputImage.vue'
 import PetOverlayForm from '@/modules/vethistory/_components/OverlayForm'
@@ -178,8 +180,24 @@ export default {
             'selectedPet'
         ]),
         ...mapGetters('user', [
-            'isInstitution'
-        ])
+            'isInstitution',
+            'getUserId'
+        ]),
+
+        isMyPet() {
+            return this.petData && this.petData.user_id === this.getUserId
+        }
+    },
+
+    watch: {
+        isMyPet(value) {
+            if (this.petData && this.petData.id && !value) {
+                vetHistoryService.getVetHistoryByPet({ pet: this.petData })
+                    .then(response => {
+                        this.vetHistory = response.data.vetHistory
+                    })
+            }
+        }
     },
 
     methods: {
@@ -239,6 +257,13 @@ export default {
     beforeMount() {
         this.petData = Object.assign({}, this.selectedPet)
         this.vetHistory = this.getVetHistory()(this.petData.id) || []
+
+        if (this.petData && this.petData.id && !this.isMyPet) {
+            vetHistoryService.getVetHistoryByPet({ pet: this.petData })
+                .then(response => {
+                    this.vetHistory = response.data.vetHistory
+                })
+        }
     
         if (!this.petData.id) this.$router.push('/profile')
     },

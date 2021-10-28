@@ -9,10 +9,11 @@
         <div class="search-content">
 
             <button
-                v-for="(pet, i) in filteredPets"
-                :key="i"
+                v-for="pet in filteredPets"
+                :key="pet.id"
                 type="button"
                 class="pet-card"
+                @click="openPetProfile(pet)"
             >
                 <div class="thumbnail">
                     <img 
@@ -32,7 +33,8 @@
 </template>
 
 <script>
-import searchService from '../../services/search-service'
+import { mapActions } from 'vuex';
+import searchService from '@/services/search-service'
 
 export default {
     name: 'Search',
@@ -49,11 +51,22 @@ export default {
             return this.term 
                 ? this.pets.filter(pet => {
                     if (Object.values(pet).find(value => {
-                        if (typeof value === 'string' && value.toLowerCase().includes(this.term)) return value;
+                        if (typeof value === 'string' && value.toLowerCase().includes(this.term.toLowerCase())) return value;
                     })) return pet
                 }) 
                 : this.pets;
         }
+    },
+
+    methods: {
+        ...mapActions('pet', [
+            'setSelectedPet'
+        ]),
+
+        openPetProfile(pet) {
+            this.setSelectedPet(pet)
+            this.$router.push('/pet/profile')
+        },
     },
 
     async created() {

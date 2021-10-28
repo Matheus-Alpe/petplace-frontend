@@ -122,8 +122,8 @@
 
             <div class="owner__pets-container">
                 <button
-                    v-for="(pet, i) in pets"
-                    :key="i"
+                    v-for="pet in pets"
+                    :key="pet.id"
                     type="button"
                     class="owner__pet-card"
                     @click="openPetProfile(pet)"
