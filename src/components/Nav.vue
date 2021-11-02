@@ -7,6 +7,10 @@
         <PetLink to="/">
             <img src="@/assets/icons/home_icon.svg" alt="Inicio">
         </PetLink>
+
+        <PetLink to="/terms">
+            <img src="@/assets/icons/home_icon.svg" alt="Termos">
+        </PetLink>
         
         <PetLink to="/profile">
             <img src="@/assets/icons/profile_icon.svg" alt="Perfil">
