@@ -1,19 +1,19 @@
 <template>
     <div class="petplace-nav">
-        <PetLink to="/search">
-            <img src="@/assets/icons/search_icon.svg" alt="Pesquisar Pet">
-        </PetLink>
-        
         <PetLink to="/">
-            <img src="@/assets/icons/home_icon.svg" alt="Inicio">
+            <span class="material-icons-round" title="Inicio">home</span>
+        </PetLink>
+
+        <PetLink to="/search">
+            <span class="material-icons-round" title="Pesquisar">search</span>
         </PetLink>
 
         <PetLink to="/terms">
-            <img src="@/assets/icons/home_icon.svg" alt="Termos">
+            <span class="material-icons-round">library_books</span>
         </PetLink>
         
         <PetLink to="/profile">
-            <img src="@/assets/icons/profile_icon.svg" alt="Perfil">
+            <span class="material-icons-round" title="Perfil">account_circle</span>
         </PetLink>
     </div>
 </template>
@@ -44,6 +44,7 @@ export default {
         display: flex;
         justify-content: center;
         align-items: center;
+        padding: 5px 0;
     }
 }
 </style>

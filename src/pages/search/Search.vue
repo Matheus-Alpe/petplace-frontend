@@ -85,6 +85,7 @@ export default {
     padding: 10px;
     display: grid;
     gap: 10px;
+    margin-bottom: 34px;
 
     .pet-card {
         all: unset;

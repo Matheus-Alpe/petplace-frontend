@@ -20,6 +20,14 @@
                     public_off
                 </span>
             </div>
+            <div class="pet-donation-actions" v-if="!isMyPet">
+                <button class="adopt" @click="shouldShowTermOverlay = !shouldShowTermOverlay">
+                    <span
+                        class="material-icons "
+                    >pets</span>
+                    Adotar
+                </button>
+            </div>
             <div class="pet-actions" v-if="isMyPet">
                 <span
                     class="material-icons edit"
@@ -124,6 +132,14 @@
             :message="petData.adoptable ? 'Deseja remover anuncio de doação?' : 'Desejar anunciar para doação?'"
             @close-overlay="shouldShowPublishOverlay = false"
         />
+        
+        <PetOverlay
+            :data="formatedPet"
+            :callback="termAction"
+            :should-show="shouldShowTermOverlay"
+            message="Você responsabilizará pelos cuidados desse pet?"
+            @close-overlay="shouldShowTermOverlay = false"
+        />
 
         <PetOverlay
             :data="petData"
@@ -165,6 +181,7 @@ export default {
             vetHistory: [],
             shouldShowDeleteOverlay: false,
             shouldShowPublishOverlay: false,
+            shouldShowTermOverlay: false,
             vetOverlay: false
         }
     },
@@ -181,7 +198,8 @@ export default {
         ]),
         ...mapGetters('user', [
             'isInstitution',
-            'getUserId'
+            'getUserId',
+            'getUserIdentifier'
         ]),
 
         isMyPet() {
@@ -218,6 +236,10 @@ export default {
             'setSelectedVetHistory'
         ]),
 
+        ...mapActions('responsibilityTerm', [
+            'createTerm'
+        ]),
+
         async deleteCallback(pet) {
             try {
                 await this.deletePet(pet)
@@ -242,9 +264,17 @@ export default {
             return date.split('T')[0].split('-').reverse().join('/')
         },
 
+        async termAction() {
+            try {
+                const alteredData = { pet: this.formatedPet, loggedUserIdentifier: this.getUserIdentifier }
+                await this.createTerm(alteredData)
+            } catch (error) {
+                return error
+            }
+        },
+
         async publishAction() {
             try {
-                console.log('mensagem', this.formatedPet)
                 const alteredData = { pet: { ...this.formatedPet, adoptable: !this.formatedPet.adoptable } }
                 await this.updatePet(alteredData)
                 this.petData = alteredData.pet
@@ -308,6 +338,18 @@ export default {
             &.publish-off {
                 background: grey;
             }
+        }
+
+        .adopt {
+            all: unset;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding-right: 10px;
+            border-radius: 0 0 20px 0;
+            background: cadetblue;
+            font-weight: bold;
+            box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
         }
     }
 
