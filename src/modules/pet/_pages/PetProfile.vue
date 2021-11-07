@@ -4,7 +4,7 @@
         class="pet-profile"
     >
         <div class="pet-info-header">
-            <div class="pet-donation-actions" v-if="isInstitution">
+            <div class="pet-donation-actions" v-if="isMyPet && isInstitution">
                 <span
                     v-if="!petData.adoptable"
                     class="material-icons publish"
@@ -20,7 +20,7 @@
                     public_off
                 </span>
             </div>
-            <div class="pet-donation-actions" v-if="!isMyPet">
+            <div class="pet-donation-actions" v-if="!isMyPet && !isInstitution">
                 <button class="adopt" @click="shouldShowTermOverlay = !shouldShowTermOverlay">
                     <span
                         class="material-icons "
