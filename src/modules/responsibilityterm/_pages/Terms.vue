@@ -15,7 +15,8 @@
 
         </div>
 
-        <TermView v-if="selectedTerm"/>
+        <TermView v-if="selectedTerm && selectedTerm.id"/>
+        
     </div>
 </template>
 

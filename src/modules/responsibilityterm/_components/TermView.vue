@@ -1,21 +1,25 @@
 <template>
     <div class="term-view" @click="setSelectedTerm({})">
-        {{ selectedTerm.id }}
-
         <TermProfile 
             :info="selectedTerm.info"
+        />
+
+        <TermPet
+            :pet="selectedTerm.petInfo"
         />
     </div>
 </template>
 
 <script>
 import TermProfile from '../_components/TermProfile.vue'
+import TermPet from '../_components/TermPet.vue'
 import { mapState, mapActions } from 'vuex'
 
 export default {
     name: 'TermView',
     components: {
-        TermProfile
+        TermProfile,
+        TermPet
     },
     data() {
         return {
@@ -38,10 +42,15 @@ export default {
 
 <style lang="scss" scoped>
 .term-view {
-    z-index: 5;
+    z-index: 2;
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    right: 10px;
+    bottom: 40px;
     background: #DDB967;
     padding: 10px;
     border-radius: 10px;
-    box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;
+    box-shadow: rgba(17, 17, 26, 0.1) 0px 4px 16px, rgba(17, 17, 26, 0.1) 0px 8px 24px, rgba(17, 17, 26, 0.1) 0px 16px 56px;
 }
 </style>

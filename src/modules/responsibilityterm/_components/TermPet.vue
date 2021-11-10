@@ -1,20 +1,18 @@
 <template>
-    <div class="term-profile" v-if="info && info.id">
-        <h2>{{ info.name }}</h2>
-        <p>CEP: {{ info.cep }}</p>
-        <p>email: {{ info.email }}</p>
-        <p>Celular: {{ info.cellphone }}</p>
-        <p v-if="info.telephone">Telefone: {{ info.telephone }}</p>
+    <div class="term-pet" v-if="pet && pet.id">
+        <h2>{{ pet.name }}</h2>
+        <p>Raça: {{ pet.breed }}</p>
+        <p>Porte: {{ pet.size }}</p>
     </div>
 </template>
 
 <script>
 
 export default {
-    name: 'TermProfile',
+    name: 'TermPet',
 
     props: {
-        info: Object
+        pet: Object
     },
 
     components: {
@@ -37,8 +35,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.term-profile {
-    background: #D1603D;
+.term-pet {
+    background: #ADBCA5;
     gap: 10px;
     padding: 10px;
     border-radius: 10px;

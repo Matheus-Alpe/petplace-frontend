@@ -268,6 +268,7 @@ export default {
             try {
                 const alteredData = { pet: this.formatedPet, loggedUserIdentifier: this.getUserIdentifier }
                 await this.createTerm(alteredData)
+                this.$router.push('/terms')
             } catch (error) {
                 return error
             }
