@@ -5,8 +5,9 @@
         <div class="container-terms">
             
             <div 
-                v-for="term in terms"
+                v-for="term in termOrder"
                 class="card-term"
+                :class="term.status"
                 :key="term.id"
                 @click="setSelectedTerm(term)"
             >
@@ -40,7 +41,12 @@ export default {
             'selectedTerm'
         ]),
 
-        ...mapGetters('user', ['isInstitution'])
+        ...mapGetters('user', ['isInstitution']),
+
+        termOrder() {
+            const reverse = this.terms && [...this.terms].reverse()
+            return  reverse || this.terms;
+        }
     },
 
     methods: {
@@ -71,7 +77,7 @@ export default {
 
         .card-term {
             all: unset;
-            background: #D7F9F1;
+            background: #BDBBB6;
             padding: 10px;
             display: flex;
             align-items: center;
@@ -80,13 +86,13 @@ export default {
             overflow: hidden;
             box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;
 
-            &.archived {
-                background: #AFBC88;
-                opacity: .5;
+            &.arquivado {
+                background: #7c7e76;
+                opacity: .3;
             }
 
-            &.approved {
-                background: #618B4A;
+            &.aprovado {
+                background: #6ea551;
             }
         }
     }

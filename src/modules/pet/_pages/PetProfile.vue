@@ -137,7 +137,7 @@
             :data="formatedPet"
             :callback="termAction"
             :should-show="shouldShowTermOverlay"
-            message="Você responsabilizará pelos cuidados desse pet?"
+            :type="'term'"
             @close-overlay="shouldShowTermOverlay = false"
         />
 

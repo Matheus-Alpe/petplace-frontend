@@ -1,9 +1,5 @@
 <template>
     <div class="petplace-nav">
-        <PetLink to="/">
-            <span class="material-icons-round" title="Inicio">home</span>
-        </PetLink>
-
         <PetLink to="/search">
             <span class="material-icons-round" title="Pesquisar">search</span>
         </PetLink>

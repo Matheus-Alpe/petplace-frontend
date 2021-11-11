@@ -6,7 +6,8 @@
     >
         <!-- Overlay content -->
         <div class="overlay-content">
-            <p>{{ message }}</p>
+            <p v-if="type == 'common'">{{ message }}</p>
+            <TermText v-else/>
             <a @click.prevent="closeOverlay" class="button-main">Cancelar</a>
             <a @click.prevent="confirmAction">Confirmar</a>
         </div>
@@ -14,13 +15,24 @@
 </template>
 
 <script>
+import TermText from "@/components/TermText.vue";
+
 export default {
     name: 'Overlay',
+
+    components: {
+        TermText
+    },
 
     props: {
         data: Object,
         
         callback: Function,
+
+        type: {
+            type: String,
+            default: 'common'
+        },
 
         message: {
             type: String,
@@ -70,11 +82,17 @@ export default {
     background-color: #fff;
     margin: 0 auto;
     padding: 1.5em 5px 1em;
-    top: 25%;
+    top: 50%;
+    transform: translateY(-50%);
     width: 90%;
     text-align: center;
     margin-top: 30px;
     border-radius: 5px;
+    
+    .term-text {
+        max-height: 300px;
+        text-align: left;
+    }
 }
 
 .overlay-content p {

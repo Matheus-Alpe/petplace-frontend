@@ -12,4 +12,9 @@ export default {
     [types.SET_SELECTED_TERM] (state, payload) {
         state.selectedTerm = payload;
     },
+
+    [types.UPDATE_SELECTED_TERM] (state, { attribute, value }) {
+        if (!state.selectedTerm[attribute]) return;
+        state.selectedTerm[attribute] = value;
+    },
 }

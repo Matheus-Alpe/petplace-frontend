@@ -10,6 +10,10 @@ export const setSelectedTerm = ({ commit }, payload) => {
     commit(types.SET_SELECTED_TERM, payload)
 }
 
+export const updateSelectedTerm = ({ commit }, payload) => {
+    commit(types.UPDATE_SELECTED_TERM, { attribute: "status", value: payload })
+}
+
 export const createTerm = async ({ dispatch }, { pet, loggedUserIdentifier }) => {
     try {
         const { data: { userInfo }} = await userService.findUserById(pet.user_id)
