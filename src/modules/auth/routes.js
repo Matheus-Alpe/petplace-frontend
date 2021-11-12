@@ -1,8 +1,22 @@
+import AuthContainer from './_pages/AuthContainer.vue'
+
 export default [
     {
-        path: '/login',
-        name: 'login',
-        component: () =>
-            import(/* webpackChunkName: "login" */ './pages/Login.vue'),
+        path: '/auth',
+        component: AuthContainer,
+        children: [
+            {
+                path: 'login',
+                alias: ['logar', 'entrar'],
+                name: 'Login',
+                component: () => import(/* webpackChunkName: "login" */ './_pages/Login.vue'),
+            },
+            {
+                path: 'register',
+                alias: ['cadastrar', 'criar'],
+                name: 'Register',
+                component: () => import(/* webpackChunkName: "register" */ './_pages/Register.vue'),
+            },
+        ]
     },
 ];

@@ -1,30 +1,58 @@
 <template>
-    <div id="excludeOverlay" class="overlay">
+    <div 
+        class="overlay"
+        :class="{ show: shouldShow }"
+        ref="excludeOverlay"
+    >
         <!-- Overlay content -->
         <div class="overlay-content">
-            <p>Deseja excluir a conta?</p>
+            <p v-if="type == 'common'">{{ message }}</p>
+            <TermText v-else/>
             <a @click.prevent="closeOverlay" class="button-main">Cancelar</a>
-            <a @click.prevent="remove">Confirmar</a>
+            <a @click.prevent="confirmAction">Confirmar</a>
         </div>
     </div>
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import TermText from "@/components/TermText.vue";
 
 export default {
-    name: "Overlay",
-    props: ['user'],
-    methods: {
+    name: 'Overlay',
 
-        ...mapActions('auth', ['ActionDeleteUser']),
+    components: {
+        TermText
+    },
 
-        remove() {
-            this.ActionDeleteUser(this.user)
+    props: {
+        data: Object,
+        
+        callback: Function,
+
+        type: {
+            type: String,
+            default: 'common'
         },
 
+        message: {
+            type: String,
+            default: 'Deseja realmente excluir?'
+        },
+
+        shouldShow: {
+            type: Boolean,
+            default: false
+        }
+    },
+
+    methods: {
         closeOverlay() {
-            document.getElementById("excludeOverlay").style.display = "none";
+            this.$emit('close-overlay')
+        },
+
+        async confirmAction() {
+            await this.callback(this.data)
+            this.closeOverlay()
         },
     }
 };
@@ -32,28 +60,39 @@ export default {
 
 <style lang="scss" scoped>
 .overlay {
+    z-index: 10;
     display: none;
     height: 100%;
     width: 100%;
     position: fixed;
-    z-index: 1;
     left: 0;
     top: 0;
     background-color: rgb(0, 0, 0);
     background-color: rgba(0, 0, 0, 0.9);
     overflow-x: hidden;
     transition: 0.5s;
+
+    &.show {
+        display: block;
+    }
 }
 
 .overlay-content {
     position: relative;
     background-color: #fff;
     margin: 0 auto;
-    padding: 1.5em 0 1em;
-    top: 25%;
+    padding: 1.5em 5px 1em;
+    top: 50%;
+    transform: translateY(-50%);
     width: 90%;
     text-align: center;
     margin-top: 30px;
+    border-radius: 5px;
+    
+    .term-text {
+        max-height: 300px;
+        text-align: left;
+    }
 }
 
 .overlay-content p {
