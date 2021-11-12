@@ -5,6 +5,7 @@ import router from './router'
 
 import './assets/scss/app.scss'
 import 'material-icons/iconfont/material-icons.css'
+import './registerServiceWorker'
 
 Vue.config.productionTip = false
 
