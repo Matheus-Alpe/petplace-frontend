@@ -18,11 +18,14 @@
 
         <div class="actions">
             <div class="status">
-                <span>Status:</span>
-                <span class="message">{{ selectedTerm.status }}</span>
-            </div>
-            <div class="buttons">
-
+                <template v-if="!isInstitution">
+                    <span>Status:</span>
+                    <span class="message">{{ selectedTerm.status }}</span>
+                </template>
+                <template v-else>
+                    <button @click="updateTermStatus(false)">Rejeitar</button>
+                    <button @click="updateTermStatus(true)">Aprovar</button>
+                </template>
             </div>
         </div>
     </div>
@@ -32,7 +35,7 @@
 import TermProfile from '../_components/TermProfile.vue'
 import TermPet from '../_components/TermPet.vue'
 import TermText from "@/components/TermText.vue";
-import { mapState, mapActions } from 'vuex'
+import { mapState, mapActions, mapGetters } from 'vuex'
 
 export default {
     name: 'TermView',
@@ -50,10 +53,18 @@ export default {
             'selectedTerm'
         ]),
 
+        ...mapGetters('user', ['isInstitution'])
     },
 
     methods: {
-        ...mapActions('responsibilityTerm', ['setSelectedTerm', 'updateSelectedTerm']),
+        ...mapActions('responsibilityTerm', ['setSelectedTerm', 'updateSelectedTerm', 'updateTerm']),
+        
+        async updateTermStatus(status) {
+            const response = status ? 'aprovado' : 'arquivado'
+            await this.updateSelectedTerm(response)
+            await this.updateTerm()
+            this.setSelectedTerm({})
+        }
     },
 
     beforeMount() {

@@ -74,11 +74,10 @@ export default {
 
 <style lang="scss" scoped>
 .term-profile {
-    background: #D1603D;
+    background: rgba(255, 255, 255, 0.5);
     gap: 10px;
     padding: 10px;
     border-radius: 10px 10px 0 0;
-    box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;
 
     h1, h2, h3 {
         margin-bottom: 5px;
@@ -93,7 +92,7 @@ export default {
         display: flex;
         flex-direction: column;
         justify-content: center;
-        background: rgba(255, 255, 255, 0.1);
+        background: rgba(255, 255, 255, 0.5);
         margin-top: 5px;
 
         button {

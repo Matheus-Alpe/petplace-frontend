@@ -10,8 +10,8 @@ export const setSelectedTerm = ({ commit }, payload) => {
     commit(types.SET_SELECTED_TERM, payload)
 }
 
-export const updateSelectedTerm = ({ commit }, payload) => {
-    commit(types.UPDATE_SELECTED_TERM, { attribute: "status", value: payload })
+export const updateSelectedTerm = async ({ commit }, payload) => {
+    await commit(types.UPDATE_SELECTED_TERM, { attribute: "status", value: payload })
 }
 
 export const createTerm = async ({ dispatch }, { pet, loggedUserIdentifier }) => {
@@ -27,6 +27,18 @@ export const createTerm = async ({ dispatch }, { pet, loggedUserIdentifier }) =>
 
         await termService.createTerm(termModel)
         await dispatch('auth/loadSession', {}, { root: true })
+    } catch (error) {
+        console.log(error && error.response)
+    }
+}
+
+export const updateTerm = async ({ dispatch, state }) => {
+    try {
+        const { selectedTerm } = state
+        if (selectedTerm && selectedTerm.id) {
+            await termService.update(selectedTerm)
+            await dispatch('auth/loadSession', {}, { root: true })
+        }
     } catch (error) {
         console.log(error && error.response)
     }

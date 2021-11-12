@@ -47,7 +47,6 @@ export const loadSession = ({ dispatch }) => {
     return new Promise(async (resolve, reject) => {
         try {
             const { data } = await authService.loadSession()
-            console.log(data)
             dispatch('user/setUser', data.user, { root: true })
             dispatch('pet/setPets', data.pets, { root: true })
             dispatch('vetHistory/setVetHistory', data.vetHistory, { root: true })
