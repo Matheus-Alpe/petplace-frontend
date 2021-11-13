@@ -128,6 +128,10 @@
                     class="owner__pet-card"
                     @click="openPetProfile(pet)"
                 >
+                    <div class="overlay">
+                        <h3>{{ pet.name }}</h3>
+                    </div>
+
                     <img 
                         :src="pet.avatar_url" 
                         :alt="`pet ${pet.name}`">
@@ -337,10 +341,38 @@ export default {
         box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;
 
 
-        &:not(.register) img {
-            max-width: 100%;
-            height: 100%;
-            object-fit: cover;
+        &:not(.register) {
+            position: relative;
+
+            .overlay {
+                position: absolute;
+                z-index: 1;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: linear-gradient(356deg, rgba(0,0,0,1) 0%, rgba(9,9,121,0) 50%, rgba(0,212,255,0) 100%);
+                display: flex;
+                justify-content: center;
+                align-items: flex-end;
+                padding: 10px;
+                word-break: break-all;
+
+                h3 {
+                    color: #fff;
+                    font-weight: normal;
+                    display: -webkit-box;
+                    -webkit-box-orient: vertical;
+                    -webkit-line-clamp: 1;
+                    overflow: hidden;
+                }
+            }
+
+            img {
+                max-width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
         }
 
         &.register {
