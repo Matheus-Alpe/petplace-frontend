@@ -13,7 +13,7 @@
                     <div class="dropdown-content" ref="dropdownContent">
                         <p @click="showForm">Editar Perfil</p>
                         <p @click="openOverlay">Excluir Perfil</p>
-                        <p @click="userLogOut">Sair</p>
+                        <p @click="logOut">Sair</p>
                     </div>
                 </div>
 
@@ -230,10 +230,6 @@ export default {
 
 			this.dataUser[attribute] = value
 		},
-
-        userLogOut() {
-            this.logOut()
-        },
 
         openPetProfile(pet) {
             this.setSelectedPet(pet)

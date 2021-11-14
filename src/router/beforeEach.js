@@ -8,7 +8,7 @@ export default async (to, from, next) => {
             await store.dispatch('auth/checkToken')
             return next({ name: to.name })
         } catch (error) {
-            store.dispatch('auth/logOut')
+            store.dispatch('auth/resetSession')
             return next({ name: 'Login' })
         }
     } 

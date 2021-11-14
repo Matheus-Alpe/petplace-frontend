@@ -14,6 +14,11 @@ export const logIn = async ({ dispatch }, payload) => {
 }
 
 export const logOut = ({ dispatch }) => {
+    dispatch('resetSession')
+    window._Vue.$router.push({ path: '/auth/login' })
+}
+
+export const resetSession = ({ dispatch }) => {
     dispatch('setToken', '')
     storage.setHeaderToken('')
     storage.deleteLocalToken()
@@ -53,7 +58,7 @@ export const loadSession = ({ dispatch }) => {
             dispatch('responsibilityTerm/setTerms', data.terms, { root: true })
             resolve(data.user)
         } catch (error) {
-            dispatch('logOut')
+            dispatch('resetSession')
             reject(error)
         }
     })
