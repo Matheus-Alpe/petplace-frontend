@@ -168,13 +168,32 @@ export default {
     &.show {
         display: block;
     }
+
+    button {
+        outline: none;
+        display: inline-block;
+        text-decoration: none;
+        text-transform: uppercase;
+        margin: 0 5px;
+        padding: 0.5rem 0.2rem;
+        border-radius: 50px;
+        font-size: 0.8rem;
+        border: 2px solid transparent;
+        box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.54);
+
+        &.button-main {
+            background-color: rgb(99, 99, 212);
+            color: white;
+            padding: 0.5rem 1.5rem;
+        }
+    }
 }
 
 .overlay-content {
     position: relative;
     background-color: #fff;
     margin: 0 auto;
-    padding: 1.5em 10px 1em;
+    padding: 20px;
     top: 25%;
     width: 90%;
     text-align: center;
@@ -191,31 +210,10 @@ export default {
         position: absolute;
 
         &.delete {
-            right: 7px;
+            right: 20px;
         }
     }
 }
-
-.overlay button {
-    outline: none;
-    display: inline-block;
-    text-decoration: none;
-    text-transform: uppercase;
-    margin: 1rem 5px 0;
-    padding: 0.5rem 0.2rem;
-    border-radius: 50px;
-    font-size: 0.8rem;
-    border: 2px solid transparent;
-    box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.54);
-
-    &.button-main {
-        background-color: rgb(99, 99, 212);
-        color: white;
-        padding: 0.5rem 1.5rem;
-    }
-}
-
-
 
 @media screen and (max-height: 450px) {
     .overlay button {

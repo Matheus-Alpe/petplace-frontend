@@ -3,7 +3,13 @@
         v-if="petData.id"
         class="pet-profile"
     >
-        <div class="pet-info-header">
+        <div 
+            class="pet-info-header"
+            :class="[
+                petData.sex && petData.sex.toLowerCase(),
+                petData.type && petData.type.toLowerCase()
+            ]"
+        >
             <div class="pet-donation-actions" v-if="isMyPet && isInstitution">
                 <span
                     v-if="!petData.adoptable"
@@ -52,12 +58,10 @@
                     :img-url="petData.avatar_url"
                 />
             </div>
-
+            <h2>
+                {{ petData.name }}
+            </h2>
             <div class="pet-content">
-                <p>
-                    <label>Nome: </label>
-                    {{ petData.name }}
-                </p>
                 <p>
                     <label>Idade: </label>
                     <template v-if="petData.age">
@@ -98,21 +102,44 @@
         </div>
 
         <div class="pet-info-content">
-            <h2>Histórico Veterinário</h2>
+            <h2>
+                <img 
+                    src="@/assets/icons/vet_icon.svg"
+                    alt="Ícone Histórico Veterinário"
+                    class="vet-icon"
+                >
+                
+                <div>Histórico Veterinário</div>
+            </h2>
             <table>
-                <tr class="head">
-                    <th>Descrição</th>
-                    <th>Data</th>
-                </tr>
-                <tr v-for="(history, index) in vetHistory" :key="index" class="data">
-                    <td class="description">{{ history.description }}</td>
-                    <td class="date">{{ formatDate(history.date) }}</td>
-                    <td class="edit" v-if="isMyPet">
-                        <span 
-                            @click="editVetHistory(history)"
-                            class="material-icons"
-                        >settings</span>
-                    </td>
+                
+                <template v-if="vetHistory.length">
+                    <tr class="head">
+                        <th>Descrição</th>
+                        <th>Data</th>
+                    </tr>
+                    <tr v-for="(history, index) in vetHistory" :key="index" class="data">
+                        <td class="description">{{ history.description }}</td>
+                        <td class="date">{{ formatDate(history.date) }}</td>
+                        <td class="edit" v-if="isMyPet">
+                            <span 
+                                @click="editVetHistory(history)"
+                                class="material-icons"
+                            >settings</span>
+                        </td>
+                    </tr>
+                </template>
+                
+                <tr 
+                    v-else
+                    class="empty-history"
+                >
+                        <p>Pet sem histórico veterinário!</p>
+                        <img 
+                            src="@/assets/icons/folder-empty_icon.png"
+                            alt="Sem Histórico Veterinário"
+                            class="without-icon"
+                        >
                 </tr>
                 <tr class="action" v-if="isMyPet">
                     <td colspan="2">
@@ -303,7 +330,34 @@ export default {
 
 <style lang="scss" scoped>
 .pet-info-header {
-    background: pink;
+    background-color: #fff;
+    border-radius: 0 0 20px 20px;
+    padding: 1em;
+
+    &::before {
+        position: absolute;
+        content: "";
+        display: block;
+        inset: 0;
+        background-size: 50%;
+        opacity: .04;
+    }
+
+    &.gato::before {
+        background-image: url("~@/assets/bg/bg-minicats.svg");
+    }
+
+    &.cachorro::before {
+        background-image: url("~@/assets/bg/bg-minidogs.svg");
+    }
+
+    &.m {
+        background-color: #C1CAD6;
+    }
+
+    &.f {
+        background-color: #FFDAC6;
+    }
 
     .pet-donation-actions,
     .pet-actions {
@@ -325,7 +379,7 @@ export default {
             border-radius: 0 0 40px 40px;
 
             &.edit {    
-                background: cadetblue;
+                background: #6096BA;
             }
 
             &.delete {
@@ -363,8 +417,13 @@ export default {
     }
 
     .pet-content {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        gap: 10px 25px;
    
         p {
+            text-transform: capitalize;
 
             label {
                 font-weight: bold;
@@ -374,9 +433,24 @@ export default {
 }
 
 .pet-info-content {
+    padding: 10px;
+
+    h2 {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        align-items: center;
+
+        .vet-icon {
+            display: block;
+            $icon-size: 30px;
+            height: $icon-size;
+            width: $icon-size;
+        }
+    }
+
     table {
         box-sizing: border-box;
-        padding: 0 10px;
         width: 100%;
         
         tr {
@@ -399,6 +473,21 @@ export default {
             &.action {
                 justify-content: center;
                 margin-bottom: 50px;
+            }
+
+            &.empty-history {
+                justify-content: center;
+                align-items: center;
+                opacity: .5;
+
+
+                p {
+                    max-width: 50%;
+                }
+
+                img {
+                    opacity: .6;
+                }
             }
             
             td {
