@@ -102,7 +102,7 @@
         </div>
 
         <div class="pet-info-content">
-            <h2>
+            <h3>
                 <img 
                     src="@/assets/icons/vet_icon.svg"
                     alt="Ícone Histórico Veterinário"
@@ -110,7 +110,7 @@
                 >
                 
                 <div>Histórico Veterinário</div>
-            </h2>
+            </h3>
             <table>
                 
                 <template v-if="vetHistory.length">
@@ -343,6 +343,10 @@ export default {
         opacity: .04;
     }
 
+    h2 {
+        margin: 10px 0 15px;
+    }
+
     &.gato::before {
         background-image: url("~@/assets/bg/bg-minicats.svg");
     }
@@ -435,7 +439,7 @@ export default {
 .pet-info-content {
     padding: 10px;
 
-    h2 {
+    h3 {
         display: flex;
         justify-content: center;
         gap: 10px;
@@ -458,7 +462,7 @@ export default {
             justify-content: space-between;
             align-items: stretch;
             gap: 5px;
-            margin: 15px 0;
+            margin: 10px 0;
 
             &.head {
                 justify-content: space-evenly;
@@ -468,6 +472,8 @@ export default {
                 border: 2px solid black;
                 border-radius: 5px;
                 padding: 0 5px;
+                margin: 5px 0;
+
             }
 
             &.action {
