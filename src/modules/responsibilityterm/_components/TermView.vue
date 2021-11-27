@@ -1,7 +1,7 @@
 <template>
     <div 
         class="term-view"
-        :class="selectedTerm.status"
+        :class="[{ 'institution': isInstitution }, selectedTerm.status]"
     >
         <div>
             <span @click.prevent="setSelectedTerm({})" class="material-icons-round">close</span>
@@ -18,14 +18,15 @@
 
         <div class="actions">
             <div class="status">
-                <template v-if="!isInstitution">
-                    <span>Status:</span>
-                    <span class="message">{{ selectedTerm.status }}</span>
-                </template>
-                <template v-else>
+                <template v-if="isInstitution && selectedTerm.status === 'pendente'">
                     <button @click="updateTermStatus(false)">Rejeitar</button>
                     <button @click="updateTermStatus(true)">Aprovar</button>
                 </template>
+                <template v-else>
+                    <span>Status:</span>
+                    <span class="message">{{ selectedTerm.status }}</span>
+                </template>
+                
             </div>
         </div>
     </div>
@@ -75,12 +76,12 @@ export default {
 <style lang="scss" scoped>
 .term-view {
     z-index: 2;
-    position: absolute;
+    position: fixed;
     top: 10px;
     left: 10px;
     right: 10px;
     bottom: 40px;
-    background: #BDBBB6;
+    background: #6ea551;
     padding: 10px;
     border-radius: 10px;
     box-shadow: rgba(17, 17, 26, 0.1) 0px 4px 16px, rgba(17, 17, 26, 0.1) 0px 8px 24px, rgba(17, 17, 26, 0.1) 0px 16px 56px;
@@ -88,12 +89,16 @@ export default {
     display: flex;
     flex-direction: column;
 
+    &.institution {
+        background: #7371FC;
+    }
+
     &.arquivado {
-        background: #7c7e76;
+        background: #b0b1af;
     }
 
     &.aprovado {
-        background: #6ea551;
+        background: #b0b1af;
     }
 
     .actions {

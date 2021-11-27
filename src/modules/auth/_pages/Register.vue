@@ -4,7 +4,7 @@
 			<img src="@/assets/icons/login.svg" alt="login">
 		</PetLink>
 
-		<h2>Cadastra-se</h2>
+		<h2>Cadastre-se</h2>
 
 		<form @submit.prevent="registerIn">
 			<div class="pet-radio-group">
