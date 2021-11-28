@@ -2,7 +2,7 @@
     <div class="container-register">
 
         <div class="title-register">
-            <h1>Cadastro de Pet</h1>
+            <h1> {{ hasSelectedPet ? 'Edição' : 'Cadastro' }} de Pet</h1>
         </div>
         
         <form 

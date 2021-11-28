@@ -60,13 +60,14 @@ export default {
 
     computed: {
         filteredPets() {
+            const shuffled = [...this.pets].sort(() => Math.random() - 0.5)
             return this.term 
                 ? this.pets.filter(pet => {
                     if (Object.values(pet).find(value => {
                         if (typeof value === 'string' && value.toLowerCase().includes(this.term.toLowerCase())) return value;
                     })) return pet
                 }) 
-                : this.pets;
+                : shuffled;
         }
     },
 
