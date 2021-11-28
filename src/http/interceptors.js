@@ -6,8 +6,7 @@ export const requestInterceptor = (config) => {
 
 export const responseInterceptor = (response) => {
     if (response.status === 401) {
-        store.dispatch('auth/logOut')
-        window._Vue.$router.push({ path: '/auth/login' })
+        store.dispatch('auth/resetSession')
     }
     return response;
 }

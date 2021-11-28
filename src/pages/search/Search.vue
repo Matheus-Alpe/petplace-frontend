@@ -1,9 +1,16 @@
 <template>
     <div>
-        <h1>Pesquisa</h1>
+        <form class="search-form">
+            <h2>
+                <span class="material-icons-round md-24">search</span>
+                Pesquisar Pet
+                <span class="material-icons-round md-24">pets</span>
+            </h2>
+            <div class="search-input">
+                <input type="search" id="search" placeholder="Pesquise por: tipo, nome, raça..." v-model="term">
+                
+            </div>
 
-        <form @submit.prevent="search">
-            <input type="search" id="search" placeholder="pesquise" v-model="term">
         </form>
 
         <div class="search-content">
@@ -13,6 +20,10 @@
                 :key="pet.id"
                 type="button"
                 class="pet-card"
+                :class="[
+                    pet.sex && pet.sex.toLowerCase(),
+                    pet.type && pet.type.toLowerCase()
+                ]"
                 @click="openPetProfile(pet)"
             >
                 <div class="thumbnail">
@@ -23,7 +34,8 @@
 
                 <div class="content">
                     <h2>{{ pet.name }}</h2>
-                    <p>{{ pet.breed }}</p>
+                    <sub>{{ pet.breed }}</sub>
+                    <sub>Porte: {{ pet.size }}</sub>
                 </div>
             </button>
 
@@ -48,13 +60,14 @@ export default {
 
     computed: {
         filteredPets() {
+            const shuffled = [...this.pets].sort(() => Math.random() - 0.5)
             return this.term 
                 ? this.pets.filter(pet => {
                     if (Object.values(pet).find(value => {
                         if (typeof value === 'string' && value.toLowerCase().includes(this.term.toLowerCase())) return value;
                     })) return pet
                 }) 
-                : this.pets;
+                : shuffled;
         }
     },
 
@@ -81,11 +94,43 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.search-form {
+    background: #5f5fa8;
+    padding: 10px;
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    z-index: 5;
+
+    h2 {
+        margin: 0 0 5px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .search-input {
+        display: flex;
+        align-items: center;
+
+        input {
+            all: unset;
+            flex: 1;
+            padding: 10px;
+            color: black;
+            box-shadow:inset 0px 1px 5px black; 
+            background: white;
+        }
+    }
+}
+
 .search-content {
     padding: 10px;
     display: grid;
     gap: 10px;
-    margin-bottom: 34px;
+    margin: 92px 0 34px;
 
     .pet-card {
         all: unset;
@@ -96,13 +141,24 @@ export default {
         border-radius: 10px;
         overflow: hidden;
         box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;
+
+        &.m {
+            background-color: #C1CAD6;
+        }
+
+        &.f {
+            background-color: #FFDAC6;
+        }
         
         .thumbnail {
             width: 100%;
-            max-width: 50%;
+            max-width: 55%;
             height: 150px;
             display: grid;
             place-items: center;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: rgba(17, 17, 26, 0.1) 0px 0px 16px;
             
             img {
                 max-width: 100%;
@@ -112,10 +168,33 @@ export default {
         }
 
         .content {
-            widows: 50%;
+            width: 100%;
+            max-width: 45%;
             display: flex;
             flex-direction: column;
+            align-items: center;
             gap: 10px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            text-align: center;
+            
+            > * {
+                display: -webkit-box;
+                overflow: hidden;
+                -webkit-line-clamp: 2;
+                -webkit-box-orient: vertical;
+            }
+
+            h2 {
+                word-break: break-all;
+            }
+        }
+
+         &:nth-child(even) {
+
+            .content {
+                order: -1;
+            }
         }
     }
 }

@@ -15,7 +15,6 @@
 
             <div class="content" v-if="showCEP">
                 <div v-if="location && location.localidade">
-                    <h3>Local:</h3>
                     <p v-if="location.cep">CEP: {{ location.cep }}</p>
                     <p v-if="location.uf">UF: {{ location.uf }}</p>
                     <p v-if="location.localidade">Cidade: {{ location.localidade }}</p>
@@ -24,7 +23,6 @@
                     
                 </div>
                 <div v-else>
-                    <h3>Local:</h3>
                     <p>CEP: {{ info.cep }}</p>
                 </div>
             </div>

@@ -1,17 +1,29 @@
 <template>
     <div class="terms">
-        <h2>Pessoas interessadas</h2>
+        <header>
+            <h2>Termos de Responsabilidade</h2>
+        </header>
 
         <div class="container-terms">
             
             <div 
                 v-for="term in termOrder"
                 class="card-term"
-                :class="term.status"
+                :class="[{ 'institution': isInstitution }, term.status]"
                 :key="term.id"
                 @click="setSelectedTerm(term)"
             >
-                <p>{{ isInstitution ? getFirstName(term.info.name) : 'Você' }} quer adotar: {{ term.petInfo.name }}</p>
+                <div v-if="isInstitution" class="thumbnail">
+                    <img :src="term.info.avatar_url" :alt="`Pet Avatar ${term.petInfo.name}`">
+                </div>
+                <p class="message">
+                    {{ isInstitution ? getFirstName(term.info.name) : 'Você' }} 
+                    {{ term.status === 'aprovado' ? 'adotou' : term.status === 'arquivado' ? 'não pode adotar' : 'quer adotar'}} 
+                    {{ term.petInfo.name }}
+                </p>
+                <div class="thumbnail">
+                    <img :src="term.petInfo.avatar_url" :alt="`Pet Avatar ${term.petInfo.name}`">
+                </div>
             </div>
 
         </div>
@@ -69,6 +81,11 @@ export default {
 .terms {
     min-height: 100vh;
 
+    header {
+        background: #5f5fa8;
+        padding: 10px;
+    }
+
     .container-terms {
         padding: 10px;
         display: grid;
@@ -77,22 +94,47 @@ export default {
 
         .card-term {
             all: unset;
-            background: #BDBBB6;
-            padding: 10px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
+            background: #6ea551;
+            display: grid;
+            grid-template-columns: 2fr 100px;
+            place-items: center;
             border-radius: 10px;
             overflow: hidden;
             box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;
 
+            &.institution {
+                background: #7371FC;
+                grid-template-columns: 1fr 2fr 1fr;
+            }
+
             &.arquivado {
-                background: #7c7e76;
+                background: #b0b1af;
                 opacity: .3;
             }
 
             &.aprovado {
-                background: #6ea551;
+                background: #b0b1af;
+            }
+
+            .message {
+                padding: 5px;
+                text-align: center;
+            }
+
+            .thumbnail {
+                width: 100%;
+                height: 100px;
+                display: grid;
+                place-items: center;
+                border-radius: 10px;
+                overflow: hidden;
+                box-shadow: rgba(17, 17, 26, 0.1) 0px 0px 16px;
+                
+                img {
+                    max-width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                }
             }
         }
     }

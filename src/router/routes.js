@@ -9,11 +9,5 @@ export default [
     ...auth,
     ...user,
     ...pet,
-    ...responsibilityTerm,
-
-    // fallback for invalid endpoints
-    // {
-    //     path: '*',
-    //     redirect: '/auth/login'
-    // }
+    ...responsibilityTerm
 ]

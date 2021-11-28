@@ -75,13 +75,26 @@ export default {
     &.show {
         display: block;
     }
+ 
+    a {
+        outline: none;
+        display: inline-block;
+        text-decoration: none;
+        text-transform: uppercase;
+        margin: 1rem 5px 0;
+        padding: 0.5rem 0.5rem;
+        border-radius: 50px;
+        font-size: 0.8rem;
+        border: 2px solid transparent;
+        box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.54);
+    }
 }
 
 .overlay-content {
     position: relative;
     background-color: #fff;
     margin: 0 auto;
-    padding: 1.5em 5px 1em;
+    padding: 20px;
     top: 50%;
     transform: translateY(-50%);
     width: 90%;
@@ -93,24 +106,12 @@ export default {
         max-height: 300px;
         text-align: left;
     }
+
+    p {
+        font-size: 1.2rem;
+    }
 }
 
-.overlay-content p {
-    font-size: 1.2rem;
-}
-
-.overlay a {
-    outline: none;
-    display: inline-block;
-    text-decoration: none;
-    text-transform: uppercase;
-    margin: 1rem 5px 0;
-    padding: 0.5rem 0.5rem;
-    border-radius: 50px;
-    font-size: 0.8rem;
-    border: 2px solid transparent;
-    box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.54);
-}
 
 .button-main {
     background-color: rgb(99, 99, 212);
